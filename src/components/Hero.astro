@@ -1,0 +1,44 @@
+---
+interface Props {
+	eyebrow: string;
+	title: string;
+	description: string;
+	image: string;
+	imageAlt: string;
+	primaryLabel: string;
+	primaryHref: string;
+	secondaryLabel?: string;
+	secondaryHref?: string;
+}
+
+const {
+	eyebrow,
+	title,
+	description,
+	image,
+	imageAlt,
+	primaryLabel,
+	primaryHref,
+	secondaryLabel,
+	secondaryHref,
+} = Astro.props;
+---
+
+<section class="home-hero">
+	<div class="container home-hero-grid">
+		<div class="home-hero-copy">
+			<p class="eyebrow">{eyebrow}</p>
+			<h1>{title}</h1>
+			<p class="hero-description">{description}</p>
+			<div class="hero-actions">
+				<a class="button button-primary" href={primaryHref}>{primaryLabel} <span aria-hidden="true">→</span></a>
+				{secondaryLabel && secondaryHref && <a class="button button-text" href={secondaryHref}>{secondaryLabel}</a>}
+			</div>
+			<p class="hero-proof"><span aria-hidden="true">✳</span> Engineering with purpose. Delivery with care.</p>
+		</div>
+		<div class="home-hero-image">
+			<img src={image} alt={imageAlt} width="1400" height="1200" fetchpriority="high" />
+			<div class="hero-image-note"><span>01</span><span>People. Process. Progress.</span></div>
+		</div>
+	</div>
+</section>

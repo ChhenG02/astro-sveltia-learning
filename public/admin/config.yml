@@ -1,0 +1,105 @@
+# yaml-language-server: $schema=https://unpkg.com/@sveltia/cms/schema/sveltia-cms.json
+
+# Local Repository mode uses the browser's File System Access API.
+# This placeholder is not contacted unless you choose the GitHub sign-in flow.
+backend:
+  name: github
+  repo: local/certain-corot
+
+media_folder: /public/uploads
+public_folder: /uploads
+output:
+  omit_empty_optional_fields: true
+
+collections:
+  - name: projects
+    label: Projects
+    label_singular: Project
+    description: Industrial engineering and technology projects shown in the portfolio.
+    folder: /src/content/projects
+    identifier_field: slug
+    create: true
+    delete: true
+    media_folder: /public/uploads/projects
+    public_folder: /uploads/projects
+    fields:
+      - { name: title, label: Project Title, widget: string, hint: The display title for the project. }
+      - { name: slug, label: URL Slug, widget: string, hint: Lowercase words separated by hyphens; this becomes the project URL. }
+      - { name: description, label: Short Description, widget: text }
+      - { name: category, label: Category, widget: string }
+      - { name: location, label: Location, widget: string }
+      - { name: year, label: Project Year, widget: string }
+      - { name: scope, label: Project Scope, widget: string }
+      - { name: publishedDate, label: Publish Date, widget: datetime, type: date, required: false }
+      - { name: sortOrder, label: Display Order, widget: number, value_type: int, min: 1, step: 1 }
+      - { name: featured, label: Feature on Home Page, widget: boolean, default: false }
+      - { name: draft, label: Keep as Draft, widget: boolean, default: false }
+      - { name: coverImage, label: Cover Image, widget: image, hint: Existing image URLs are supported; uploads are saved under public/uploads/projects. }
+      - { name: coverImageAlt, label: Cover Image Alt Text, widget: string }
+      - name: gallery
+        label: Project Gallery
+        widget: list
+        required: false
+        fields:
+          - { name: src, label: Image, widget: image }
+          - { name: alt, label: Alt Text, widget: string }
+      - { name: body, label: Project Overview, widget: markdown }
+
+  - name: services
+    label: Services
+    label_singular: Service
+    description: Engineering service cards and their detailed descriptions.
+    folder: /src/content/services
+    identifier_field: slug
+    create: true
+    delete: true
+    fields:
+      - { name: number, label: Display Number, widget: string, hint: "Use two digits, for example 01." }
+      - { name: title, label: Service Name, widget: string }
+      - { name: slug, label: URL Slug, widget: string, hint: Lowercase words separated by hyphens. }
+      - { name: summary, label: Short Summary, widget: text }
+      - name: icon
+        label: Service Icon
+        widget: select
+        options: [automation, electrical, integration, delivery, modernization, technology]
+      - { name: featured, label: Feature on Home Page, widget: boolean, default: false }
+      - { name: draft, label: Keep as Draft, widget: boolean, default: false }
+      - { name: body, label: Full Description, widget: markdown }
+
+  - name: partners
+    label: Engineering Disciplines
+    label_singular: Discipline
+    description: The disciplines shown in the home page's partner-style strip.
+    folder: /src/content/partners
+    identifier_field: slug
+    create: true
+    delete: true
+    media_folder: /public/uploads/partners
+    public_folder: /uploads/partners
+    fields:
+      - { name: name, label: Name, widget: string }
+      - { name: slug, label: URL Slug, widget: string }
+      - { name: sortOrder, label: Display Order, widget: number, value_type: int, min: 1, step: 1 }
+      - { name: logo, label: Logo, widget: image, required: false }
+      - { name: website, label: Website, widget: string, required: false }
+      - { name: description, label: Description, widget: text, required: false }
+
+  - name: news
+    label: News
+    label_singular: News Article
+    description: News entries are stored and validated; a public news page can be added later.
+    folder: /src/content/news
+    identifier_field: slug
+    create: true
+    delete: true
+    media_folder: /public/uploads/news
+    public_folder: /uploads/news
+    fields:
+      - { name: title, label: Article Title, widget: string }
+      - { name: slug, label: URL Slug, widget: string }
+      - { name: description, label: Summary, widget: text }
+      - { name: coverImage, label: Cover Image, widget: image, required: false }
+      - { name: publishedDate, label: Publish Date, widget: datetime, type: date }
+      - { name: tags, label: Tags, widget: list, required: false }
+      - { name: draft, label: Keep as Draft, widget: boolean, default: false }
+      - { name: body, label: Article, widget: markdown }

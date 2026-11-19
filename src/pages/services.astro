@@ -1,0 +1,68 @@
+---
+import ContactCTA from '../components/ContactCTA.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import { getCollection, render } from 'astro:content';
+import MainLayout from '../layouts/MainLayout.astro';
+
+const services = (await getCollection('services', ({ data }) => !data.draft)).sort(
+	(a, b) => a.data.number.localeCompare(b.data.number),
+);
+const detailedServices = await Promise.all(
+	services.map(async (service) => ({
+		service,
+		Content: (await render(service)).Content,
+	})),
+);
+---
+
+<MainLayout
+	title="Engineering Services | Northline Engineering"
+	description="Explore Northline's industrial automation, electrical engineering, systems integration, and project delivery services."
+>
+	<header class="page-hero">
+		<div class="container page-hero-content">
+			<p class="eyebrow">Our services</p>
+			<h1>Engineering that meets the moment—and what comes after.</h1>
+			<p class="lead">
+				We connect technical disciplines to help you improve performance, manage risk, and deliver
+				essential projects with confidence.
+			</p>
+		</div>
+	</header>
+
+	<section class="section-space">
+		<div class="container">
+			<SectionHeading
+				eyebrow="How we help"
+				title="The right expertise, working together."
+				description="Bring us a defined scope or an early-stage challenge. We can support one discipline or build an integrated team around your needs."
+			/>
+			<div class="service-grid service-grid-wide">
+				{detailedServices.map(({ service, Content }) => (
+					<ServiceCard service={service.data} detailed><Content /></ServiceCard>
+				))}
+			</div>
+		</div>
+	</section>
+
+	<section class="section-space section-muted">
+		<div class="container service-approach">
+			<div>
+				<p class="eyebrow">A clear path forward</p>
+				<h2>Make the complex feel manageable.</h2>
+				<p class="lead">
+					Every engagement starts with understanding your operation. Then we bring the right people
+					together, make decisions visible, and keep delivery focused on what matters.
+				</p>
+			</div>
+			<ol class="approach-steps">
+				<li><span>01</span><div><h3>Understand</h3><p>Align on your goals, context, constraints, and measures of success.</p></div></li>
+				<li><span>02</span><div><h3>Design</h3><p>Develop practical options and a clear, coordinated engineering plan.</p></div></li>
+				<li><span>03</span><div><h3>Deliver</h3><p>Support implementation, commissioning, and knowledge transfer.</p></div></li>
+			</ol>
+		</div>
+	</section>
+
+	<ContactCTA />
+</MainLayout>

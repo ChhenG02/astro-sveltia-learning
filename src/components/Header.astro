@@ -1,0 +1,30 @@
+---
+import { SITE_TITLE } from '../consts';
+import HeaderLink from './HeaderLink.astro';
+---
+
+<header class="site-header">
+	<div class="container header-inner">
+		<a class="brand" href="/" aria-label={`${SITE_TITLE} home`}>
+			<span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+			<span class="brand-name">NORTHLINE<span>ENGINEERING</span></span>
+		</a>
+		<nav class="desktop-nav" aria-label="Main navigation">
+			<HeaderLink href="/">Home</HeaderLink>
+			<HeaderLink href="/about/">About</HeaderLink>
+			<HeaderLink href="/services/">Services</HeaderLink>
+			<HeaderLink href="/projects/">Projects</HeaderLink>
+		</nav>
+		<a class="button button-small button-primary header-cta" href="/contact/">Let’s talk <span aria-hidden="true">→</span></a>
+		<details class="mobile-nav">
+			<summary aria-label="Navigation menu"><span></span><span></span></summary>
+			<nav aria-label="Mobile navigation">
+				<HeaderLink href="/">Home</HeaderLink>
+				<HeaderLink href="/about/">About</HeaderLink>
+				<HeaderLink href="/services/">Services</HeaderLink>
+				<HeaderLink href="/projects/">Projects</HeaderLink>
+				<a class="button button-small button-primary nav-contact" href="/contact/">Let’s talk <span aria-hidden="true">→</span></a>
+			</nav>
+		</details>
+	</div>
+</header>

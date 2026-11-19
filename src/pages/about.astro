@@ -1,0 +1,102 @@
+---
+import ContactCTA from '../components/ContactCTA.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import MainLayout from '../layouts/MainLayout.astro';
+---
+
+<MainLayout
+	title="About Northline Engineering"
+	description="Learn about Northline Engineering's mission, values, and capabilities in industrial engineering and technology."
+>
+	<header class="page-hero">
+		<div class="container page-hero-content">
+			<p class="eyebrow">About Northline</p>
+			<h1>Engineering a more capable, resilient industry.</h1>
+			<p class="lead">
+				We are an independent engineering and technology team helping organizations solve
+				meaningful operational challenges with clarity and care.
+			</p>
+		</div>
+	</header>
+
+	<section class="section-space">
+		<div class="container about-intro">
+			<div>
+				<p class="eyebrow">Who we are</p>
+				<h2>A practical partner for complex work.</h2>
+			</div>
+			<div class="prose-copy">
+				<p>
+					Northline brings together engineers, automation specialists, and delivery leads to help
+					clients improve the systems they rely on every day. We listen first, make complexity
+					easier to navigate, and focus on solutions that work beyond the drawing board.
+				</p>
+				<p>
+					Our teams work alongside yours—from the first conversation through implementation and
+					ongoing improvement—so technical decisions stay connected to real operational needs.
+				</p>
+			</div>
+		</div>
+	</section>
+
+	<section class="section-space section-muted">
+		<div class="container">
+			<SectionHeading
+				eyebrow="Our direction"
+				title="Clear intent. Lasting impact."
+				description="Our purpose shapes how we approach every project and partnership."
+			/>
+			<div class="purpose-grid">
+				<article class="purpose-card">
+					<span class="card-index">01</span>
+					<h3>Our mission</h3>
+					<p>
+						Make industry work better by solving engineering challenges with practical thinking,
+						technical depth, and a genuine commitment to the people doing the work.
+					</p>
+				</article>
+				<article class="purpose-card">
+					<span class="card-index">02</span>
+					<h3>Our vision</h3>
+					<p>
+						A world where essential operations are safer, more efficient, and ready to adapt to
+						what comes next.
+					</p>
+				</article>
+			</div>
+		</div>
+	</section>
+
+	<section class="section-space">
+		<div class="container">
+			<SectionHeading
+				eyebrow="What guides us"
+				title="The way we work matters."
+				description="Good outcomes come from strong partnerships and sound engineering principles."
+			/>
+			<div class="values-grid">
+				<article><h3>Safety, always</h3><p>We put people and safe operation at the centre of every decision.</p></article>
+				<article><h3>Own the outcome</h3><p>We communicate clearly, follow through, and stay accountable to the result.</p></article>
+				<article><h3>Stay curious</h3><p>We challenge assumptions and keep learning as technology and needs evolve.</p></article>
+				<article><h3>Work as one team</h3><p>We respect your experience and make progress through open collaboration.</p></article>
+			</div>
+		</div>
+	</section>
+
+	<section class="capabilities-section section-space section-navy">
+		<div class="container capabilities-grid">
+			<div>
+				<p class="eyebrow eyebrow-light">Our capabilities</p>
+				<h2>From the first idea to a system that performs.</h2>
+			</div>
+			<ul class="capability-list">
+				<li>Industrial automation and control systems</li>
+				<li>Electrical and instrumentation engineering</li>
+				<li>Operational technology and systems integration</li>
+				<li>Project delivery, commissioning, and lifecycle support</li>
+			</ul>
+		</div>
+	</section>
+
+	<ContactCTA />
+</MainLayout>

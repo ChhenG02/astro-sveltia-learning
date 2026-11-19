@@ -1,0 +1,64 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+---
+
+<MainLayout
+	title="Contact Northline Engineering"
+	description="Get in touch with Northline Engineering to discuss an engineering, automation, or technology project."
+>
+	<header class="page-hero">
+		<div class="container page-hero-content">
+			<p class="eyebrow">Contact</p>
+			<h1>Let’s talk about what you’re working on.</h1>
+			<p class="lead">
+				Share a challenge, an early idea, or a project already underway. We’ll connect you with the
+				right person on our team.
+			</p>
+		</div>
+	</header>
+
+	<section class="section-space">
+		<div class="container contact-grid">
+			<div class="contact-details">
+				<p class="eyebrow">Get in touch</p>
+				<h2>Start a conversation.</h2>
+				<p class="lead">We’re ready to listen and help you find a practical next step.</p>
+				<dl>
+					<div><dt>Email</dt><dd><a href="mailto:hello@northline.example">hello@northline.example</a></dd></div>
+					<div><dt>Phone</dt><dd><a href="tel:+15550140142">+1 (555) 014-0142</a></dd></div>
+					<div><dt>Office</dt><dd>Toronto, Ontario<br />Serving clients across North America</dd></div>
+				</dl>
+				<p class="contact-note">Northline is a sample company identity. Update these contact details before publishing.</p>
+			</div>
+
+			<form class="contact-form" action="mailto:hello@northline.example" method="post" enctype="text/plain">
+				<h2>Send us a note</h2>
+				<p>Your email app will open with your message addressed to our team.</p>
+				<div class="form-field">
+					<label for="name">Your name</label>
+					<input id="name" name="name" autocomplete="name" required />
+				</div>
+				<div class="form-field">
+					<label for="email">Work email</label>
+					<input id="email" name="email" type="email" autocomplete="email" required />
+				</div>
+				<div class="form-field">
+					<label for="subject">What can we help with?</label>
+					<select id="subject" name="subject" required>
+						<option value="" selected disabled>Select a service</option>
+						<option>Automation and controls</option>
+						<option>Electrical engineering</option>
+						<option>Systems integration</option>
+						<option>Project delivery</option>
+						<option>Something else</option>
+					</select>
+				</div>
+				<div class="form-field">
+					<label for="message">A little about your project</label>
+					<textarea id="message" name="message" rows="5" required></textarea>
+				</div>
+				<button class="button button-primary" type="submit">Continue to email <span aria-hidden="true">→</span></button>
+			</form>
+		</div>
+	</section>
+</MainLayout>

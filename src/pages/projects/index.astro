@@ -1,0 +1,83 @@
+---
+import ContactCTA from '../../components/ContactCTA.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import { getCollection } from 'astro:content';
+import MainLayout from '../../layouts/MainLayout.astro';
+
+const projects = (await getCollection('projects', ({ data }) => !data.draft)).sort(
+	(a, b) => a.data.sortOrder - b.data.sortOrder,
+);
+const categories = [...new Set(projects.map((project) => project.data.category))];
+---
+
+<MainLayout
+	title="Engineering Projects | Northline Engineering"
+	description="Explore a selection of Northline Engineering's industrial automation, energy, and infrastructure project work."
+>
+	<header class="page-hero">
+		<div class="container page-hero-content">
+			<p class="eyebrow">Selected projects</p>
+			<h1>Good engineering, put to work.</h1>
+			<p class="lead">
+				Every project starts with a different challenge. What stays constant is our focus on
+				practical outcomes and long-term performance.
+			</p>
+		</div>
+	</header>
+
+	<section class="section-space">
+		<div class="container">
+			<SectionHeading
+				eyebrow="Our work"
+				title="Built around real operating needs."
+				description="Browse a sample of the project environments and engineering challenges we support."
+			/>
+			<div class="project-filters" role="group" aria-label="Filter projects by category">
+				<button class="filter-button is-active" type="button" data-project-filter="all" aria-pressed="true">All projects</button>
+				{categories.map((category) => (
+					<button class="filter-button" type="button" data-project-filter={category} aria-pressed="false">
+						{category}
+					</button>
+				))}
+			</div>
+			<div class="project-grid project-grid-list">
+				{projects.map((project) => (
+					<article data-project-card data-category={project.data.category}>
+						<ProjectCard project={project} />
+					</article>
+				))}
+			</div>
+			<p class="filter-status" aria-live="polite"></p>
+		</div>
+	</section>
+
+	<ContactCTA />
+</MainLayout>
+
+<script>
+	const filterButtons = document.querySelectorAll<HTMLButtonElement>('[data-project-filter]');
+	const projectCards = document.querySelectorAll<HTMLElement>('[data-project-card]');
+	const filterStatus = document.querySelector<HTMLElement>('.filter-status');
+
+	filterButtons.forEach((button) => {
+		button.addEventListener('click', () => {
+			const selectedCategory = button.dataset.projectFilter;
+			let visibleCount = 0;
+
+			filterButtons.forEach((filterButton) => {
+				const isSelected = filterButton === button;
+				filterButton.classList.toggle('is-active', isSelected);
+				filterButton.setAttribute('aria-pressed', String(isSelected));
+			});
+
+			projectCards.forEach((card) => {
+				const isVisible = selectedCategory === 'all' || card.dataset.category === selectedCategory;
+				card.hidden = !isVisible;
+				if (isVisible) visibleCount += 1;
+			});
+
+			if (filterStatus) filterStatus.textContent = `${visibleCount} project${visibleCount === 1 ? '' : 's'} shown`;
+		});
+	});
+</script>

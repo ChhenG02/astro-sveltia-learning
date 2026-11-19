@@ -1,0 +1,33 @@
+---
+import { SITE_TITLE } from '../consts';
+
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+	<div class="container footer-main">
+		<div class="footer-brand">
+			<a class="brand brand-light" href="/" aria-label={`${SITE_TITLE} home`}>
+				<span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+				<span class="brand-name">NORTHLINE<span>ENGINEERING</span></span>
+			</a>
+			<p>Engineering clarity for the systems that keep our world moving.</p>
+		</div>
+		<div class="footer-links">
+			<p class="footer-label">Explore</p>
+			<a href="/about/">About</a>
+			<a href="/services/">Services</a>
+			<a href="/projects/">Projects</a>
+		</div>
+		<div class="footer-links">
+			<p class="footer-label">Connect</p>
+			<a href="/contact/">Contact</a>
+			<a href="mailto:hello@northline.example">hello@northline.example</a>
+			<a href="tel:+15550140142">+1 (555) 014-0142</a>
+		</div>
+	</div>
+	<div class="container footer-bottom">
+		<span>© {currentYear} {SITE_TITLE}. All rights reserved.</span>
+		<span>Practical thinking. Lasting impact.</span>
+	</div>
+</footer>

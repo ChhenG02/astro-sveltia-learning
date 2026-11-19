@@ -1,0 +1,22 @@
+---
+interface Props {
+	title?: string;
+	description?: string;
+}
+
+const {
+	title = 'Have a challenge in mind?',
+	description = 'Let’s bring the right people together and find a clear path forward.',
+} = Astro.props;
+---
+
+<section class="contact-cta">
+	<div class="container contact-cta-inner">
+		<div>
+			<p class="eyebrow eyebrow-light">Start a conversation</p>
+			<h2>{title}</h2>
+			<p>{description}</p>
+		</div>
+		<a class="button button-light" href="/contact/">Contact our team <span aria-hidden="true">→</span></a>
+	</div>
+</section>

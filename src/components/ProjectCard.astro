@@ -1,0 +1,22 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+	project: CollectionEntry<'projects'>;
+}
+
+const { project } = Astro.props;
+const { data } = project;
+---
+
+<a class="project-card" href={`/projects/${data.slug}/`}>
+	<div class="project-card-image">
+		<img src={data.coverImage} alt={data.coverImageAlt} width="960" height="680" loading="lazy" />
+		<span class="project-card-arrow" aria-hidden="true">↗</span>
+	</div>
+	<div class="project-card-copy">
+		<p class="project-category">{data.category} <span aria-hidden="true">·</span> {data.location}</p>
+		<h3>{data.title}</h3>
+		<p>{data.description}</p>
+	</div>
+</a>
