@@ -64,6 +64,37 @@ const services = defineCollection({
 		coverImage: z.string().min(1),
 		coverImageAlt: z.string().min(1),
 		highlights: z.array(z.string()).default([]),
+		benefits: z
+			.array(
+				z.object({
+					title: z.string().min(1),
+					description: z.string().min(1),
+				}),
+			)
+			.default([]),
+		workflow: z
+			.array(
+				z.object({
+					step: z.string().min(1),
+					title: z.string().min(1),
+					description: z.string().min(1),
+				}),
+			)
+			.default([]),
+		solutions: z
+			.array(
+				z.object({
+					title: z.string().min(1),
+					category: z.string().optional(),
+					summary: z.string().min(1),
+					problem: z.string().optional(),
+					applications: z.string().optional(),
+					benefits: z.string().optional(),
+					specs: z.array(z.string()).optional(),
+					image: z.string().optional(),
+				}),
+			)
+			.default([]),
 		featured: z.boolean().default(true),
 		draft: z.boolean().default(false),
 	}),

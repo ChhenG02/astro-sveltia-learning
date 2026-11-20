@@ -140,6 +140,33 @@ collections:
         label: Key Solutions Included
         widget: list
         required: false
+      - name: benefits
+        label: Why It Matters (Benefits)
+        widget: list
+        required: false
+        fields:
+          - { name: title, label: Title, widget: string }
+          - { name: description, label: Description, widget: text }
+      - name: workflow
+        label: Engineering Delivery Flow (Steps)
+        widget: list
+        required: false
+        fields:
+          - { name: step, label: Step Number, widget: string }
+          - { name: title, label: Step Title, widget: string }
+          - { name: description, label: Step Description, widget: text }
+      - name: solutions
+        label: Detailed Solutions Catalog
+        widget: list
+        required: false
+        fields:
+          - { name: title, label: Solution Title, widget: string }
+          - { name: category, label: Group / Category, widget: string, required: false }
+          - { name: summary, label: Short Summary, widget: text }
+          - { name: problem, label: Problem Solved, widget: text, required: false }
+          - { name: applications, label: Typical Applications, widget: text, required: false }
+          - { name: benefits, label: Key Benefits, widget: text, required: false }
+          - { name: image, label: Solution Image, widget: image, required: false }
       - { name: featured, label: Show in Landing Page Trio, widget: boolean, default: true }
       - { name: draft, label: Keep as Draft, widget: boolean, default: false }
       - { name: body, label: Full Description & Solutions, widget: markdown }

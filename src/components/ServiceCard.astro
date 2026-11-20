@@ -10,7 +10,7 @@ const { service, index = 0 } = Astro.props;
 ---
 
 <article class={`service-tall-card ${index === 1 ? 'is-middle-offset' : ''}`} data-reveal>
-	<a href={`/services/#${service.slug}`} class="service-tall-link" aria-label={service.title}>
+	<a href={`/services/${service.slug}/`} class="service-tall-link" aria-label={service.title}>
 		<img
 			src={service.coverImage}
 			alt={service.coverImageAlt}

@@ -1,8 +1,8 @@
 ---
 import { getCollection, render } from 'astro:content';
-import ServiceCard from '../components/ServiceCard.astro';
-import { SITE_TITLE } from '../consts';
-import MainLayout from '../layouts/MainLayout.astro';
+import ServiceCard from '../../components/ServiceCard.astro';
+import { SITE_TITLE } from '../../consts';
+import MainLayout from '../../layouts/MainLayout.astro';
 
 const services = (await getCollection('services', ({ data }) => !data.draft)).sort((a, b) =>
 	a.data.number.localeCompare(b.data.number),
@@ -29,12 +29,8 @@ const renderedServices = await Promise.all(
 				</div>
 				<div class="page-header-side">
 					<p>
-						One accountable team from site survey and electrical CAD drawings to in-house panel assembly, PLC/SCADA programming, and 24/7 after-sales support.
+						One accountable team from site survey and electrical CAD drawings to in-house panel assembly, PLC/SCADA programming, and 24/7 after-sales support. Select any division below to see our step-by-step engineering flow and solutions.
 					</p>
-					<a class="btn-secondary" href="/contact/">
-						<span>Request a Free Site Survey</span>
-						<span class="btn-arrow-circle" aria-hidden="true">↗</span>
-					</a>
 				</div>
 			</div>
 		</div>
@@ -64,7 +60,11 @@ const renderedServices = await Promise.all(
 								height="440"
 								class="notched-photo-img"
 							/>
-							<a href="/contact/" class="notch-cutout" aria-label={`Get a quote for ${service.data.title}`}>
+							<a
+								href={`/services/${service.data.slug}/`}
+								class="notch-cutout"
+								aria-label={`View full details and flow for ${service.data.title}`}
+							>
 								<span class="notch-yellow-btn">
 									<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
 										<line x1="7" y1="17" x2="17" y2="7"></line>
@@ -76,7 +76,9 @@ const renderedServices = await Promise.all(
 
 						<div class="service-detail-copy">
 							<span class="label-tag">Division {service.data.number}</span>
-							<h2>{service.data.title}</h2>
+							<h2>
+								<a href={`/services/${service.data.slug}/`}>{service.data.title}</a>
+							</h2>
 							<div class="prose-v2">
 								<Content />
 							</div>
@@ -93,7 +95,10 @@ const renderedServices = await Promise.all(
 							)}
 
 							<div class="service-detail-actions">
-								<a class="btn-primary" href="/contact/">Get a Quote for {service.data.shortTitle}</a>
+								<a class="btn-secondary" href={`/services/${service.data.slug}/`}>
+									<span>Explore {service.data.shortTitle} Flow &amp; Solutions</span>
+									<span class="btn-arrow-circle" aria-hidden="true">↗</span>
+								</a>
 							</div>
 						</div>
 					</article>

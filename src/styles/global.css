@@ -401,7 +401,7 @@ h1 {
 	inset: 0;
 	width: 100%;
 	height: 100%;
-	color: rgba(58, 91, 169, 0.16);
+	color: rgba(58, 91, 169, 0.08);
 	z-index: 0;
 }
 
@@ -409,7 +409,7 @@ h1 {
 	inset: 0;
 	width: 100%;
 	height: 100%;
-	color: rgba(255, 255, 255, 0.14);
+	color: rgba(255, 255, 255, 0.1);
 	z-index: 1;
 }
 
@@ -417,7 +417,7 @@ h1 {
 	inset: 0;
 	width: 100%;
 	height: 100%;
-	color: rgba(58, 91, 169, 0.22);
+	color: rgba(58, 91, 169, 0.14);
 	z-index: 1;
 }
 
@@ -459,9 +459,11 @@ h1 {
 }
 
 .hero-photo-frame {
-	height: 468px;
+	height: 430px;
 	border-radius: var(--radius-card);
+	overflow: hidden;
 	position: relative;
+	background: var(--card-gray);
 }
 
 .hero-main-img {
@@ -475,86 +477,86 @@ h1 {
 	inset: 0;
 	background: linear-gradient(
 		180deg,
-		rgba(10, 10, 10, 0.12) 0%,
-		rgba(10, 10, 10, 0.05) 50%,
-		rgba(10, 10, 10, 0.45) 100%
+		rgba(10, 10, 10, 0.08) 0%,
+		rgba(10, 10, 10, 0.03) 55%,
+		rgba(10, 10, 10, 0.38) 100%
 	);
 	pointer-events: none;
 }
 
-/* Top-right tilted sticker tags */
+/* Top-right smaller, subtle service badges */
 .hero-stickers {
 	position: absolute;
-	top: 24px;
-	right: 84px;
+	top: 20px;
+	right: 22px;
 	display: flex;
 	flex-wrap: wrap;
-	gap: 10px;
+	gap: 8px;
 	z-index: 3;
-	max-width: 390px;
+	max-width: 340px;
 	justify-content: flex-end;
 }
 
 .sticker-tag {
 	display: inline-flex;
 	align-items: center;
-	padding: 8px 16px;
+	padding: 5px 12px;
 	border-radius: var(--radius-pill);
-	font-size: 12px;
-	font-weight: 700;
+	font-size: 11px;
+	font-weight: 600;
 	color: var(--ink);
-	box-shadow: 0 8px 20px rgba(10, 10, 10, 0.14);
+	box-shadow: 0 4px 12px rgba(10, 10, 10, 0.1);
 	user-select: none;
-	transition: transform 0.25s ease;
+	transition: transform 0.22s ease;
 }
 
 .sticker-blue {
 	background: var(--sticker-blue);
-	transform: rotate(-4.5deg);
+	transform: rotate(-2deg);
 }
 
 .sticker-amber,
 .sticker-pink {
 	background: var(--sticker-amber);
-	transform: rotate(3.5deg);
+	transform: rotate(1.8deg);
 }
 
 .sticker-mint,
 .sticker-lime {
 	background: var(--sticker-mint);
-	transform: rotate(-2.5deg);
+	transform: rotate(-1.2deg);
 }
 
 .sticker-tag:hover {
-	transform: rotate(0deg) scale(1.05);
+	transform: rotate(0deg) scale(1.03);
 }
 
-/* Bottom-left frosted-glass card */
+/* Bottom-left frosted-glass experience card */
 .hero-glass-card {
 	position: absolute;
-	left: 28px;
-	bottom: 28px;
+	left: 24px;
+	bottom: 24px;
 	z-index: 3;
-	background: rgba(255, 255, 255, 0.78);
-	backdrop-filter: blur(16px);
-	-webkit-backdrop-filter: blur(16px);
-	border: 1px solid rgba(255, 255, 255, 0.65);
-	border-radius: 22px;
-	padding: 18px 24px;
-	box-shadow: 0 18px 40px rgba(10, 10, 10, 0.18);
-	min-width: 300px;
+	background: rgba(255, 255, 255, 0.84);
+	backdrop-filter: blur(14px);
+	-webkit-backdrop-filter: blur(14px);
+	border: 1px solid rgba(255, 255, 255, 0.72);
+	border-radius: 20px;
+	padding: 14px 20px;
+	box-shadow: 0 12px 30px rgba(10, 10, 10, 0.14);
+	min-width: 268px;
 }
 
 .glass-stat-row {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	gap: 18px;
+	gap: 16px;
 }
 
 .glass-stat-num {
 	font-family: var(--font-display);
-	font-size: 34px;
+	font-size: 28px;
 	font-weight: 600;
 	letter-spacing: -0.03em;
 	color: var(--ink);
@@ -567,12 +569,12 @@ h1 {
 }
 
 .glass-avatar-img {
-	width: 36px;
-	height: 36px;
+	width: 32px;
+	height: 32px;
 	border-radius: 50%;
 	object-fit: cover;
 	border: 2px solid var(--bg-white);
-	margin-left: -10px;
+	margin-left: -9px;
 	background: var(--card-gray);
 }
 
@@ -581,20 +583,24 @@ h1 {
 }
 
 .glass-stat-label {
-	margin: 10px 0 0;
-	font-size: 12px;
+	margin: 8px 0 0;
+	font-size: 11.5px;
 	font-weight: 600;
 	color: var(--ink-soft);
 	letter-spacing: 0.01em;
 }
 
-/* 3. ABOUT / STORY SECTION */
+/* 3. ABOUT / STORY SECTION (More vertical breathing room after Hero) */
+.about-v2 {
+	padding-top: 148px;
+}
+
 .about-top-grid {
 	display: grid;
 	grid-template-columns: repeat(12, 1fr);
 	gap: 24px;
 	align-items: start;
-	margin-bottom: 56px;
+	margin-bottom: 48px;
 }
 
 .about-headline-col {
@@ -612,16 +618,228 @@ h1 {
 	color: var(--gray-body);
 }
 
-.about-collage-grid {
+/* Simplified Two-Card Supporting Grid (1 Large Photo + 1 Unified Summary Card) */
+.about-two-card-grid {
 	display: grid;
 	grid-template-columns: repeat(12, 1fr);
 	gap: 28px;
-	align-items: end;
+	align-items: stretch;
+}
+
+.about-main-photo {
+	grid-column: span 7;
+	position: relative;
+	height: 400px;
+	border-radius: var(--radius-card);
+	overflow: hidden;
+	background: var(--card-gray);
+}
+
+.about-main-photo img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.about-photo-caption {
+	position: absolute;
+	left: 20px;
+	bottom: 20px;
+	background: rgba(255, 255, 255, 0.9);
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+	padding: 10px 16px;
+	border-radius: 16px;
+	display: flex;
+	flex-direction: column;
+	font-size: 12px;
+}
+
+.about-photo-caption strong {
+	color: var(--ink);
+	font-size: 13px;
+}
+
+.about-photo-caption span {
+	color: var(--gray-body);
+}
+
+.about-summary-card {
+	grid-column: 8 / span 5;
+	background: var(--cream);
+	border: 1px solid var(--border-light);
+	border-radius: var(--radius-card);
+	padding: 34px 32px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	gap: 24px;
+}
+
+.about-summary-card h3 {
+	font-size: 24px;
+	line-height: 1.25;
+	margin: 4px 0 12px;
+}
+
+.about-summary-lead {
+	margin: 0 0 20px;
+	font-size: 14.5px;
+	line-height: 1.65;
+	color: var(--gray-body);
+}
+
+.about-summary-lead strong {
+	color: var(--ink);
+}
+
+.about-more-link {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 14px;
+	font-weight: 700;
+	color: var(--brand-blue);
+	padding-top: 16px;
+	border-top: 1px solid var(--border-light);
+	transition: color 0.18s ease, gap 0.18s ease;
+}
+
+.about-more-link:hover {
+	color: var(--ink);
+	gap: 12px;
+}
+
+.about-collage-grid {
+	display: grid;
+	grid-template-columns: repeat(12, 1fr);
+	gap: 24px;
+	align-items: stretch;
 }
 
 .about-photo-large {
 	grid-column: span 5;
-	height: 380px;
+	min-height: 380px;
+}
+
+.about-photo-badge {
+	position: absolute;
+	left: 18px;
+	bottom: 18px;
+	z-index: 3;
+	background: rgba(255, 255, 255, 0.88);
+	backdrop-filter: blur(12px);
+	-webkit-backdrop-filter: blur(12px);
+	border: 1px solid rgba(255, 255, 255, 0.7);
+	padding: 10px 16px;
+	border-radius: 16px;
+	display: flex;
+	flex-direction: column;
+	font-size: 12px;
+	box-shadow: 0 10px 24px rgba(10, 15, 28, 0.12);
+}
+
+.about-photo-badge strong {
+	color: var(--ink);
+	font-size: 13px;
+}
+
+.about-photo-badge span {
+	color: var(--gray-body);
+}
+
+.about-credentials-stack {
+	grid-column: 6 / span 4;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	gap: 18px;
+}
+
+.about-cred-card {
+	background: var(--bg-white);
+	border: 1px solid var(--border-light);
+	border-radius: var(--radius-card);
+	padding: 26px 24px;
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.cred-eyebrow {
+	display: inline-block;
+	font-size: 11px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	color: var(--brand-blue);
+	margin-bottom: 6px;
+}
+
+.about-cred-card h3 {
+	font-size: 22px;
+	margin-bottom: 16px;
+}
+
+.cred-checklist {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 11px;
+}
+
+.cred-checklist li {
+	display: flex;
+	align-items: flex-start;
+	gap: 10px;
+	font-size: 13.5px;
+	line-height: 1.45;
+	color: var(--gray-body);
+}
+
+.cred-checklist li strong {
+	color: var(--ink);
+}
+
+.about-metrics-row {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 14px;
+}
+
+.about-metric-pill {
+	border-radius: 20px;
+	padding: 18px 20px;
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.about-metric-pill.is-brand {
+	background: var(--navy-footer);
+	color: var(--bg-white);
+}
+
+.about-metric-pill.is-amber {
+	background: var(--yellow);
+	color: var(--ink);
+}
+
+.about-metric-pill strong {
+	font-family: var(--font-display);
+	font-size: 28px;
+	font-weight: 600;
+	letter-spacing: -0.03em;
+	line-height: 1.05;
+}
+
+.about-metric-pill span {
+	font-size: 12px;
+	line-height: 1.35;
+	opacity: 0.86;
 }
 
 .about-stats-pair {
@@ -665,24 +883,45 @@ h1 {
 .about-photo-small {
 	grid-column: 10 / span 3;
 	background: var(--cream);
-	padding: 12px;
+	border: 1px solid var(--border-light);
+	padding: 14px;
 	border-radius: var(--radius-card);
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 }
 
 .about-photo-small img {
 	width: 100%;
-	height: 210px;
+	height: 265px;
 	object-fit: cover;
 	border-radius: 16px;
 }
 
+.small-photo-footer {
+	padding: 12px 4px 2px;
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
 .small-photo-caption {
 	display: block;
-	font-size: 12px;
+	font-size: 12.5px;
 	font-weight: 600;
-	color: var(--gray-body);
-	margin-top: 10px;
-	padding-inline: 4px;
+	color: var(--ink-soft);
+	line-height: 1.35;
+}
+
+.small-photo-link {
+	font-size: 12.5px;
+	font-weight: 700;
+	color: var(--brand-blue);
+	transition: color 0.18s ease;
+}
+
+.small-photo-link:hover {
+	color: var(--ink);
 }
 
 /* 4. SERVICES SECTION */
@@ -2191,6 +2430,8 @@ h1 {
 	.hero-intro-col,
 	.about-headline-col,
 	.about-story-col,
+	.about-main-photo,
+	.about-summary-card,
 	.page-header-grid > div:first-child,
 	.page-header-side,
 	.faq-left-col,
@@ -2202,7 +2443,8 @@ h1 {
 		grid-column: span 12;
 	}
 
-	.about-stats-pair {
+	.about-stats-pair,
+	.about-credentials-stack {
 		grid-column: span 7;
 	}
 
@@ -2317,14 +2559,15 @@ h1 {
 	}
 
 	.hero-stickers {
-		top: 16px;
-		left: 16px;
-		right: 74px;
-		justify-content: flex-start;
+		top: 14px;
+		left: 14px;
+		right: 14px;
+		justify-content: flex-end;
 	}
 
 	.projects-staggered-grid,
 	.about-stats-pair,
+	.about-credentials-stack,
 	.about-photo-small,
 	.challenge-solution-grid,
 	.gallery-two-col,
@@ -2339,5 +2582,280 @@ h1 {
 
 	.cta-banner {
 		padding: 32px 24px;
+	}
+}
+
+
+/* SERVICE DETAIL PAGE (/services/[slug]/) */
+.service-hero-split {
+	display: grid;
+	grid-template-columns: 1.15fr 0.85fr;
+	gap: 44px;
+	align-items: center;
+	margin-bottom: 48px;
+}
+
+.service-overview-prose p {
+	font-size: 15.5px;
+	color: var(--gray-body);
+	margin: 14px 0 0;
+}
+
+.service-quick-jumps {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	margin-top: 26px;
+}
+
+.service-hero-media {
+	height: 400px;
+}
+
+/* 3 Benefits Row */
+.service-benefits-section {
+	margin-bottom: 24px;
+}
+
+.service-benefits-grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 22px;
+}
+
+.service-benefit-card {
+	background: var(--bg-white);
+	border: 1px solid var(--border-light);
+	border-radius: var(--radius-card);
+	padding: 28px;
+}
+
+.benefit-num-badge {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 34px;
+	height: 34px;
+	border-radius: 50%;
+	background: var(--yellow);
+	color: var(--ink);
+	font-size: 12px;
+	font-weight: 700;
+	margin-bottom: 14px;
+}
+
+.service-benefit-card h3 {
+	font-size: 20px;
+	margin-bottom: 8px;
+}
+
+.service-benefit-card p {
+	margin: 0;
+	font-size: 14px;
+	color: var(--gray-body);
+}
+
+/* 4-Step Engineering Delivery Flow */
+.workflow-steps-grid {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 20px;
+}
+
+.workflow-step-card {
+	background: var(--cream);
+	border: 1px solid var(--border-light);
+	border-radius: var(--radius-card);
+	padding: 26px 24px;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.workflow-step-card:hover {
+	transform: translateY(-4px);
+	box-shadow: 0 16px 32px rgba(10, 15, 28, 0.06);
+}
+
+.workflow-step-top {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 6px;
+}
+
+.workflow-step-pill {
+	display: inline-flex;
+	align-items: center;
+	padding: 5px 13px;
+	border-radius: var(--radius-pill);
+	background: var(--brand-blue);
+	color: var(--bg-white);
+	font-size: 12px;
+	font-weight: 700;
+}
+
+.workflow-connector-arrow {
+	font-size: 18px;
+	font-weight: 700;
+	color: var(--yellow);
+}
+
+.workflow-step-card h3 {
+	font-size: 19px;
+	line-height: 1.3;
+}
+
+.workflow-step-card p {
+	margin: 0;
+	font-size: 13.5px;
+	color: var(--gray-body);
+	line-height: 1.6;
+}
+
+/* Detailed Solutions Catalog Flow Cards */
+.solution-category-group {
+	margin-bottom: 56px;
+}
+
+.solution-category-group:last-child {
+	margin-bottom: 0;
+}
+
+.solution-category-heading {
+	font-size: 22px;
+	padding-bottom: 12px;
+	margin-bottom: 24px;
+	border-bottom: 1px solid var(--border-light);
+	color: var(--brand-blue);
+}
+
+.solutions-cards-stack {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+}
+
+.solution-flow-card {
+	background: var(--bg-white);
+	border: 1px solid var(--border-light);
+	border-radius: var(--radius-card);
+	padding: 28px;
+	display: grid;
+	grid-template-columns: 340px 1fr;
+	gap: 32px;
+	align-items: center;
+	transition: transform 0.24s ease, box-shadow 0.24s ease;
+}
+
+.solution-flow-card:hover {
+	transform: translateY(-3px);
+	box-shadow: 0 16px 36px rgba(10, 15, 28, 0.06);
+}
+
+.solution-flow-photo {
+	height: 240px;
+}
+
+.solution-flow-body h4 {
+	font-size: 23px;
+	margin-bottom: 8px;
+}
+
+.solution-flow-summary {
+	margin: 0 0 18px;
+	font-size: 15px;
+	color: var(--ink-soft);
+}
+
+.solution-flow-breakdown {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 14px;
+}
+
+.flow-meta-box {
+	padding: 14px 16px;
+	border-radius: 16px;
+	background: var(--bg-offwhite);
+	border: 1px solid var(--border-light);
+}
+
+.flow-meta-box.is-benefit {
+	background: var(--cream);
+}
+
+.flow-meta-label {
+	display: block;
+	font-size: 11px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	color: var(--brand-blue);
+	margin-bottom: 6px;
+}
+
+.flow-meta-box p {
+	margin: 0;
+	font-size: 13px;
+	line-height: 1.55;
+	color: var(--gray-body);
+}
+
+/* Other Service Divisions Cards */
+.other-services-grid {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 28px;
+}
+
+.other-service-card {
+	background: var(--bg-white);
+	border: 1px solid var(--border-light);
+	border-radius: var(--radius-card);
+	padding: 22px;
+	display: flex;
+	flex-direction: column;
+	gap: 18px;
+	transition: transform 0.25s ease;
+}
+
+.other-service-card:hover {
+	transform: translateY(-4px);
+}
+
+.other-service-photo {
+	height: 240px;
+}
+
+.other-service-body h3 {
+	font-size: 22px;
+	margin-bottom: 6px;
+}
+
+.other-service-body p {
+	margin: 0;
+	font-size: 14px;
+	color: var(--gray-body);
+}
+
+@media (max-width: 1024px) {
+	.service-hero-split,
+	.service-benefits-grid,
+	.solution-flow-card,
+	.solution-flow-breakdown,
+	.other-services-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.workflow-steps-grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media (max-width: 768px) {
+	.workflow-steps-grid {
+		grid-template-columns: 1fr;
 	}
 }
