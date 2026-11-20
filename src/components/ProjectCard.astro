@@ -3,20 +3,47 @@ import type { CollectionEntry } from 'astro:content';
 
 interface Props {
 	project: CollectionEntry<'projects'>;
+	staggerIndex?: number;
 }
 
-const { project } = Astro.props;
+const { project, staggerIndex = 0 } = Astro.props;
 const { data } = project;
 ---
 
-<a class="project-card" href={`/projects/${data.slug}/`}>
-	<div class="project-card-image">
-		<img src={data.coverImage} alt={data.coverImageAlt} width="960" height="680" loading="lazy" />
-		<span class="project-card-arrow" aria-hidden="true">↗</span>
-	</div>
-	<div class="project-card-copy">
-		<p class="project-category">{data.category} <span aria-hidden="true">·</span> {data.location}</p>
-		<h3>{data.title}</h3>
-		<p>{data.description}</p>
-	</div>
-</a>
+<article class={`project-card-v2 ${staggerIndex % 2 === 1 ? 'is-offset' : ''}`} data-reveal>
+	<a href={`/projects/${data.slug}/`} class="project-card-link" aria-label={data.title}>
+		<div class="notched-photo-wrap project-photo-wrap">
+			<img
+				src={data.coverImage}
+				alt={data.coverImageAlt}
+				loading="lazy"
+				width="800"
+				height="560"
+				class="notched-photo-img"
+			/>
+			<span class="notch-cutout" aria-hidden="true">
+				<span class="notch-yellow-btn">
+					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+						<line x1="7" y1="17" x2="17" y2="7"></line>
+						<polyline points="7 7 17 7 17 17"></polyline>
+					</svg>
+				</span>
+			</span>
+			<div class="project-photo-badges">
+				<span class="pill-tag pill-tag-dark">{data.category}</span>
+				<span class="pill-tag pill-tag-glass">{data.year} · {data.location}</span>
+			</div>
+		</div>
+
+		<div class="project-card-body">
+			<h3>{data.title}</h3>
+			<p>{data.summary}</p>
+			{data.results && data.results.length > 0 && (
+				<div class="project-result-chip">
+					<span class="result-dot" aria-hidden="true"></span>
+					<span>{data.results[0]}</span>
+				</div>
+			)}
+		</div>
+	</a>
+</article>

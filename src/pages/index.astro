@@ -1,114 +1,433 @@
 ---
-import ContactCTA from '../components/ContactCTA.astro';
-import Hero from '../components/Hero.astro';
-import PartnerLogos from '../components/PartnerLogos.astro';
-import ProjectCard from '../components/ProjectCard.astro';
-import SectionHeading from '../components/SectionHeading.astro';
-import ServiceCard from '../components/ServiceCard.astro';
 import { getCollection } from 'astro:content';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import NewsCard from '../components/NewsCard.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import { FAQS, SITE_DESCRIPTION, SITE_TITLE, TEAM_AVATARS, WHY_CHOOSE_US } from '../consts';
 import MainLayout from '../layouts/MainLayout.astro';
 
-const featuredProjects = (await getCollection(
-	'projects',
-	({ data }) => !data.draft && data.featured,
-)).sort((a, b) => a.data.sortOrder - b.data.sortOrder);
-const featuredServices = (await getCollection(
-	'services',
-	({ data }) => !data.draft && data.featured,
-)).sort((a, b) => a.data.number.localeCompare(b.data.number));
+const featuredServices = (
+	await getCollection('services', ({ data }) => !data.draft && data.featured)
+).sort((a, b) => a.data.number.localeCompare(b.data.number));
+
+const featuredProjects = (
+	await getCollection('projects', ({ data }) => !data.draft && data.featured)
+)
+	.sort((a, b) => a.data.sortOrder - b.data.sortOrder)
+	.slice(0, 4);
+
+const latestNews = (await getCollection('news', ({ data }) => !data.draft))
+	.sort((a, b) => b.data.publishedDate.getTime() - a.data.publishedDate.getTime())
+	.slice(0, 3);
+
+const testimonials = (await getCollection('testimonials')).sort(
+	(a, b) => a.data.sortOrder - b.data.sortOrder,
+);
 ---
 
 <MainLayout
-	title={`${SITE_TITLE} | Practical engineering for a changing world`}
+	title={`${SITE_TITLE} | Licensed Automation, BMS & Electrical Power Engineers`}
 	description={SITE_DESCRIPTION}
 >
-	<Hero
-		eyebrow="Engineering that moves you forward"
-		title="Better systems. Built for the real world."
-		description="We bring engineering, automation, and technology together to make complex operations safer, smarter, and more reliable."
-		image="https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=1800&q=85"
-		imageAlt="Engineers collaborating on an industrial project"
-		primaryLabel="Explore our services"
-		primaryHref="/services/"
-		secondaryLabel="Talk with our team"
-		secondaryHref="/contact/"
-	/>
+	<!-- 2. HERO SECTION -->
+	<section class="hero-v2 section-space-top" aria-label="Introduction">
+		<!-- Subtle decorative circuit-trace lines with dot endpoints behind hero -->
+		<svg
+			class="circuit-motif hero-circuit-motif"
+			viewBox="0 0 1440 560"
+			fill="none"
+			xmlns="http://www.w3.org/2000/svg"
+			aria-hidden="true"
+		>
+			<path d="M0 96H210L258 144H420" stroke="currentColor" stroke-width="1.25" />
+			<circle cx="420" cy="144" r="4" fill="currentColor" />
+			<path d="M120 0V64L164 108H310" stroke="currentColor" stroke-width="1.25" />
+			<circle cx="310" cy="108" r="3.5" fill="currentColor" />
+			<path d="M1440 72H1180L1132 120H980" stroke="currentColor" stroke-width="1.25" />
+			<circle cx="980" cy="120" r="4" fill="currentColor" />
+			<path d="M1440 168H1260L1216 212H1090" stroke="currentColor" stroke-width="1.25" />
+			<circle cx="1090" cy="212" r="3.5" fill="currentColor" />
+			<path d="M1040 0V48L1004 84H880" stroke="currentColor" stroke-width="1.25" />
+			<circle cx="880" cy="84" r="3.5" fill="currentColor" />
+		</svg>
 
-	<section class="intro-section section-space">
-		<div class="container intro-grid">
-			<p class="eyebrow">Built around your operation</p>
-			<div>
-				<h2>Engineering expertise, grounded in how work actually gets done.</h2>
-				<p class="lead">
-					From a single control system to a facility-wide modernization, we help teams make
-					confident decisions and turn them into practical results.
+		<div class="container">
+			<div class="hero-top-grid" data-reveal>
+				<div class="hero-headline-col">
+					<span class="label-tag">Pisnuk AutoTech Co., Ltd. · Licensed Engineering Partner</span>
+					<h1>
+						<span>Reliable automation.</span>
+						<span>Built for real factories.</span>
+					</h1>
+				</div>
+
+				<div class="hero-intro-col">
+					<p class="hero-description">
+						Designed, built, and supported by one accountable engineering team. We deliver PLC/SCADA automation, industrial robotics, SAUTER BMS, and custom 5000A electrical switchboards across Cambodia.
+					</p>
+					<div class="hero-cta-row">
+						<a class="btn-secondary" href="/services/">
+							<span>Explore our Services</span>
+							<span class="btn-arrow-circle" aria-hidden="true">↗</span>
+						</a>
+					</div>
+				</div>
+			</div>
+
+			<div class="hero-photo-stage" data-reveal>
+				<div class="hero-photo-frame notched-photo-wrap">
+					<img
+						src="/images/hero/hero-main.jpg"
+						alt="PATech engineer in uniform and hard hat commissioning an industrial robotic welding system"
+						width="1200"
+						height="480"
+						class="hero-main-img"
+					/>
+					<div class="hero-photo-overlay" aria-hidden="true"></div>
+
+					<a href="/projects/" class="notch-cutout" aria-label="View our projects">
+						<span class="notch-yellow-btn">
+							<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+								<line x1="7" y1="17" x2="17" y2="7"></line>
+								<polyline points="7 7 17 7 17 17"></polyline>
+							</svg>
+						</span>
+					</a>
+
+					<!-- Top-right tilted sticker tags (light blue, soft amber, mint) -->
+					<div class="hero-stickers" aria-label="Key highlights">
+						<span class="sticker-tag sticker-blue">Professional work</span>
+						<span class="sticker-tag sticker-amber">First workmanship</span>
+						<span class="sticker-tag sticker-mint">24/7 emergency calls</span>
+					</div>
+
+					<!-- Bottom-left frosted-glass card -->
+					<div class="hero-glass-card">
+						<div class="glass-stat-row">
+							<strong class="glass-stat-num">8+ Yrs</strong>
+							<div class="glass-avatars" aria-label="PATech engineering leadership">
+								{TEAM_AVATARS.map((member) => (
+									<img
+										src={member.src}
+										alt={member.name}
+										title={`${member.name} – ${member.role}`}
+										width="36"
+										height="36"
+										class="glass-avatar-img"
+									/>
+								))}
+							</div>
+						</div>
+						<p class="glass-stat-label">Professional Licensed · 1,000+ Projects Delivered</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- 3. ABOUT / STORY SECTION -->
+	<section class="about-v2 section-space" id="about" aria-label="Our story">
+		<div class="container">
+			<div class="about-top-grid" data-reveal>
+				<div class="about-headline-col">
+					<span class="label-tag">Our Founding Story · Since 2018</span>
+					<h2 class="section-title">Engineers first.<br />Salespeople never.</h2>
+				</div>
+				<div class="about-story-col">
+					<p>
+						PATech began in early 2018 as a hands-on technical crew modifying machine controllers, programming PLCs, and maintaining low-voltage switchboards in factories and commercial buildings. Officially registered with the Ministry of Commerce on 23 August 2018 as Pisnuk AutoTech Co., Ltd., we have grown into 40+ engineers and technicians across five specialized departments—delivering practical automation without sales fluff.
+					</p>
+				</div>
+			</div>
+
+			<div class="about-collage-grid">
+				<!-- Left: Team photo with cut top-right corner -->
+				<div class="about-photo-large notched-photo-wrap" data-reveal>
+					<img
+						src="/images/about/about-team-onsite.jpg"
+						alt="PATech engineers inspecting and testing switchgear on a factory floor"
+						loading="lazy"
+						width="560"
+						height="420"
+						class="notched-photo-img"
+					/>
+					<a href="/about/" class="notch-cutout" aria-label="Read more about PATech">
+						<span class="notch-yellow-btn">
+							<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+								<line x1="7" y1="17" x2="17" y2="7"></line>
+								<polyline points="7 7 17 7 17 17"></polyline>
+							</svg>
+						</span>
+					</a>
+				</div>
+
+				<!-- Middle: Two big 80px stats separated by a thin vertical divider -->
+				<div class="about-stats-pair" data-reveal>
+					<div class="big-stat-block">
+						<strong class="big-stat-value">100%</strong>
+						<span class="big-stat-label">Licensed professionals &amp; in-house engineers on every job</span>
+					</div>
+					<div class="big-stat-divider" aria-hidden="true"></div>
+					<div class="big-stat-block">
+						<strong class="big-stat-value">4.9/5</strong>
+						<span class="big-stat-label">Average client rating across 1,000+ delivered projects</span>
+					</div>
+				</div>
+
+				<!-- Bottom-right: Smaller rounded photo -->
+				<div class="about-photo-small" data-reveal>
+					<img
+						src="/images/about/about-story-01.jpg"
+						alt="PATech engineers commissioning a robotic welding line on site"
+						loading="lazy"
+						width="360"
+						height="280"
+					/>
+					<span class="small-photo-caption">Authorized SAUTER &amp; CHINT System Partner</span>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- 4. SERVICES SECTION -->
+	<section class="services-v2 section-space" id="services" aria-label="Services">
+		<div class="container">
+			<div class="section-header-split" data-reveal>
+				<div>
+					<span class="label-tag">What We Build &amp; Support</span>
+					<h2 class="section-title">Complete automation &amp; power solutions</h2>
+				</div>
+				<a class="btn-secondary" href="/services/">
+					<span>View all Services</span>
+					<span class="btn-arrow-circle" aria-hidden="true">↗</span>
+				</a>
+			</div>
+
+			<div class="services-staggered-row">
+				{featuredServices.map((service, index) => (
+					<ServiceCard service={service.data} index={index} />
+				))}
+			</div>
+		</div>
+	</section>
+
+	<!-- 5. WHY CHOOSE US SECTION (Diagonal Cascade + Bottom-Left Cut-Corner Photo) -->
+	<section class="why-v2 section-space" aria-label="Why choose PATech">
+		<div class="container">
+			<div class="why-header-right" data-reveal>
+				<span class="label-tag">Our Engineering Standard</span>
+				<h2 class="section-title">Four things every client gets, no exceptions.</h2>
+				<p class="why-subtext">
+					Whether we are wiring a single VFD cabinet or commissioning a 30,000 m³/day water treatment SCADA plant, every project follows the same non-negotiable standards.
 				</p>
-				<a class="text-link" href="/about/">Get to know Northline <span aria-hidden="true">→</span></a>
+			</div>
+
+			<div class="why-cascade-stage">
+				<!-- Diagonal cascade of 4 soft-cream cards -->
+				<div class="why-cascade-list">
+					{WHY_CHOOSE_US.map((item, idx) => (
+						<article class={`why-cream-card step-${idx + 1}`} data-reveal>
+							<span class="why-yellow-icon" aria-hidden="true">
+								{item.icon === 'shield' && (
+									<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+										<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+									</svg>
+								)}
+								{item.icon === 'users' && (
+									<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+										<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+										<circle cx="9" cy="7" r="4"></circle>
+										<path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+										<path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+									</svg>
+								)}
+								{item.icon === 'clock' && (
+									<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+										<circle cx="12" cy="12" r="10"></circle>
+										<polyline points="12 6 12 12 16 14"></polyline>
+									</svg>
+								)}
+								{item.icon === 'tag' && (
+									<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+										<path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+										<line x1="7" y1="7" x2="7.01" y2="7"></line>
+									</svg>
+								)}
+							</span>
+							<div class="why-card-copy">
+								<h3>{item.title}</h3>
+								<p>{item.description}</p>
+							</div>
+						</article>
+					))}
+				</div>
+
+				<!-- Bottom-left photo with cut corner filling the empty space below the cascade -->
+				<div class="why-corner-photo notched-photo-wrap" data-reveal>
+					<img
+						src="/images/services/service-electrical-power.jpg"
+						alt="PATech main switchboard panels assembled and tested in Phnom Penh"
+						loading="lazy"
+						width="520"
+						height="380"
+						class="notched-photo-img"
+					/>
+					<a href="/contact/" class="notch-cutout" aria-label="Book a free site survey">
+						<span class="notch-yellow-btn">
+							<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+								<line x1="7" y1="17" x2="17" y2="7"></line>
+								<polyline points="7 7 17 7 17 17"></polyline>
+							</svg>
+						</span>
+					</a>
+					<div class="why-photo-caption">
+						<strong>PATech Nano Factory · Phnom Penh</strong>
+						<span>In-house panel assembly &amp; FAT testing</span>
+					</div>
+				</div>
 			</div>
 		</div>
 	</section>
 
-	<section class="section-space section-muted">
+	<!-- FEATURED PROJECTS SECTION (CMS Managed) -->
+	<section class="projects-v2 section-space" id="projects" aria-label="Featured projects">
 		<div class="container">
-			<SectionHeading
-				eyebrow="What we do"
-				title="Connected expertise for critical work."
-				description="A focused set of engineering services, shaped around the challenges that matter most to your team."
-			/>
-			<div class="service-grid">
-				{featuredServices.map((service) => <ServiceCard service={service.data} />)}
+			<div class="section-header-split" data-reveal>
+				<div>
+					<span class="label-tag">Selected Portfolio · Managed via CMS</span>
+					<h2 class="section-title">Real projects on real factory floors</h2>
+				</div>
+				<a class="btn-secondary" href="/projects/">
+					<span>View all Projects</span>
+					<span class="btn-arrow-circle" aria-hidden="true">↗</span>
+				</a>
 			</div>
-			<div class="section-link-row">
-				<a class="text-link" href="/services/">View all services <span aria-hidden="true">→</span></a>
+
+			<div class="projects-staggered-grid">
+				{featuredProjects.map((project, index) => (
+					<ProjectCard project={project} staggerIndex={index} />
+				))}
 			</div>
 		</div>
 	</section>
 
-	<section class="section-space">
+	<!-- 6. TESTIMONIALS SECTION -->
+	<section class="testimonials-v2 section-space" aria-label="Client testimonials">
 		<div class="container">
-			<SectionHeading
-				eyebrow="Selected work"
-				title="Solutions made to last."
-				description="A look at the kinds of complex environments where good engineering makes a measurable difference."
-			/>
-			<div class="project-grid">
-				{featuredProjects.map((project) => <ProjectCard project={project} />)}
+			<div class="section-header-split" data-reveal>
+				<div>
+					<span class="label-tag">Client Feedback</span>
+					<h2 class="section-title">Trusted by plant managers in their toughest moments.</h2>
+				</div>
+				<div class="carousel-nav-btns" aria-label="Testimonials carousel controls">
+					<button type="button" class="circle-arrow-btn is-outlined" id="testi-prev" aria-label="Previous testimonial">
+						←
+					</button>
+					<button type="button" class="circle-arrow-btn is-dark" id="testi-next" aria-label="Next testimonial">
+						→
+					</button>
+				</div>
 			</div>
-			<div class="section-link-row">
-				<a class="text-link" href="/projects/">Explore our projects <span aria-hidden="true">→</span></a>
+
+			<div class="testimonials-track" id="testimonials-track">
+				{testimonials.map((item) => (
+					<article class="testimonial-gray-card" data-reveal>
+						<div class="testimonial-stars" aria-label={`${item.data.rating} out of 5 stars`}>
+							{Array.from({ length: item.data.rating }).map(() => (
+								<span class="star-icon" aria-hidden="true">★</span>
+							))}
+						</div>
+						<blockquote class="testimonial-quote">
+							“{item.data.quote}”
+						</blockquote>
+
+						<!-- Overlapping bottom name chip (one yellow to highlight it) -->
+						<div class={`testimonial-name-chip ${item.data.highlight ? 'is-yellow' : ''}`}>
+							<img
+								src={item.data.avatar}
+								alt={item.data.name}
+								width="40"
+								height="40"
+								loading="lazy"
+								class="chip-avatar"
+							/>
+							<div class="chip-meta">
+								<strong>{item.data.name}</strong>
+								<span>{item.data.role} · {item.data.projectType}</span>
+							</div>
+						</div>
+					</article>
+				))}
 			</div>
 		</div>
 	</section>
 
-	<section class="why-section section-space">
-		<div class="container why-grid">
-			<div class="why-image">
-				<img
-					src="https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&w=1200&q=85"
-					alt="Technician reviewing equipment in an industrial facility"
-					loading="lazy"
-					width="1200"
-					height="900"
-				/>
+	<!-- LATEST NEWS & MEDIA SECTION (CMS Managed) -->
+	<section class="news-v2 section-space" id="news-media" aria-label="News and media">
+		<div class="container">
+			<div class="section-header-split" data-reveal>
+				<div>
+					<span class="label-tag">News &amp; Media · Managed via CMS</span>
+					<h2 class="section-title">Field notes, technical guides &amp; videos</h2>
+				</div>
+				<a class="btn-secondary" href="/news-media/">
+					<span>Browse News &amp; Media</span>
+					<span class="btn-arrow-circle" aria-hidden="true">↗</span>
+				</a>
 			</div>
-			<div class="why-content">
-				<p class="eyebrow">Why Northline</p>
-				<h2>Thoughtful engineering. Accountable delivery.</h2>
+
+			<div class="news-grid-three">
+				{latestNews.map((item) => (
+					<NewsCard item={item} />
+				))}
+			</div>
+		</div>
+	</section>
+
+	<!-- FAQ SECTION -->
+	<section class="faq-v2 section-space" id="faqs" aria-label="Frequently asked questions">
+		<div class="container faq-split-grid">
+			<div class="faq-left-col" data-reveal>
+				<span class="label-tag">Plain-Spoken Answers</span>
+				<h2 class="section-title">Questions we get before every job.</h2>
 				<p>
-					We pair deep technical knowledge with a clear view of your goals, constraints, and people.
-					That means fewer handoffs, practical recommendations, and a team that stays with the work.
+					Need something specific checked on your factory floor or building riser? Give our engineering desk a call or request a free site walk-through.
 				</p>
-				<ul class="check-list">
-					<li>Independent advice tied to your operating goals</li>
-					<li>Integrated teams from early design through commissioning</li>
-					<li>Safety, maintainability, and lifecycle value considered from day one</li>
-				</ul>
-				<a class="button button-outline" href="/about/">How we work</a>
+				<a class="btn-primary" href="/contact/">Ask an Engineer</a>
+			</div>
+
+			<div class="faq-accordion-list" data-reveal>
+				{FAQS.map((faq, idx) => (
+					<details class="faq-item" open={idx === 0}>
+						<summary>
+							<span>{faq.question}</span>
+							<span class="faq-plus" aria-hidden="true">+</span>
+						</summary>
+						<div class="faq-answer">
+							<p>{faq.answer}</p>
+						</div>
+					</details>
+				))}
 			</div>
 		</div>
 	</section>
-
-	<PartnerLogos />
-	<ContactCTA />
 </MainLayout>
+
+<script>
+	const track = document.getElementById('testimonials-track');
+	const prevBtn = document.getElementById('testi-prev');
+	const nextBtn = document.getElementById('testi-next');
+
+	if (track && prevBtn && nextBtn) {
+		const scrollStep = () => {
+			const firstCard = track.querySelector<HTMLElement>('.testimonial-gray-card');
+			return firstCard ? firstCard.offsetWidth + 24 : 360;
+		};
+		prevBtn.addEventListener('click', () => {
+			track.scrollBy({ left: -scrollStep(), behavior: 'smooth' });
+		});
+		nextBtn.addEventListener('click', () => {
+			track.scrollBy({ left: scrollStep(), behavior: 'smooth' });
+		});
+	}
+</script>

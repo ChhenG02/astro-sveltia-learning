@@ -1,67 +1,119 @@
 ---
-import ContactCTA from '../components/ContactCTA.astro';
-import SectionHeading from '../components/SectionHeading.astro';
+import { SITE_TITLE, TEAM_AVATARS, WHY_CHOOSE_US } from '../consts';
 import MainLayout from '../layouts/MainLayout.astro';
 ---
 
 <MainLayout
-	title="About Northline Engineering"
-	description="Learn about Northline Engineering's mission, values, and capabilities in industrial engineering and technology."
+	title={`About PATech | ${SITE_TITLE}`}
+	description="Pisnuk AutoTech Co., Ltd. (PATech) is a Cambodian automation and electrical engineering company founded in 2018 with 40+ engineers and technicians."
 >
-	<header class="page-hero">
-		<div class="container page-hero-content">
-			<p class="eyebrow">About Northline</p>
-			<h1>Engineering a more capable, resilient industry.</h1>
-			<p class="lead">
-				We are an independent engineering and technology team helping organizations solve
-				meaningful operational challenges with clarity and care.
-			</p>
+	<header class="page-header-v2 section-space-top">
+		<div class="container">
+			<div class="page-header-grid" data-reveal>
+				<div>
+					<span class="label-tag">About Pisnuk AutoTech · Registered Aug 2018</span>
+					<h1>Engineers first.<br />Salespeople never.</h1>
+				</div>
+				<div class="page-header-side">
+					<p>
+						PATech started in early 2018 as a hands-on engineering crew modifying machine controllers, programming PLCs, and maintaining electrical switchboards. Today, 40+ staff across 5 departments design, build, and support critical systems across Cambodia.
+					</p>
+				</div>
+			</div>
 		</div>
 	</header>
 
 	<section class="section-space">
-		<div class="container about-intro">
-			<div>
-				<p class="eyebrow">Who we are</p>
-				<h2>A practical partner for complex work.</h2>
-			</div>
-			<div class="prose-copy">
-				<p>
-					Northline brings together engineers, automation specialists, and delivery leads to help
-					clients improve the systems they rely on every day. We listen first, make complexity
-					easier to navigate, and focus on solutions that work beyond the drawing board.
-				</p>
-				<p>
-					Our teams work alongside yours—from the first conversation through implementation and
-					ongoing improvement—so technical decisions stay connected to real operational needs.
-				</p>
+		<div class="container">
+			<div class="about-collage-grid">
+				<div class="about-photo-large notched-photo-wrap" data-reveal>
+					<img
+						src="/images/about/about-team.jpg"
+						alt="PATech engineering team in Phnom Penh"
+						width="640"
+						height="440"
+						class="notched-photo-img"
+					/>
+					<a href="/contact/" class="notch-cutout" aria-label="Work with our team">
+						<span class="notch-yellow-btn">
+							<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+								<line x1="7" y1="17" x2="17" y2="7"></line>
+								<polyline points="7 7 17 7 17 17"></polyline>
+							</svg>
+						</span>
+					</a>
+				</div>
+
+				<div class="about-stats-pair" data-reveal>
+					<div class="big-stat-block">
+						<strong class="big-stat-value">40+</strong>
+						<span class="big-stat-label">Engineers &amp; assembly technicians in 5 departments</span>
+					</div>
+					<div class="big-stat-divider" aria-hidden="true"></div>
+					<div class="big-stat-block">
+						<strong class="big-stat-value">1k+</strong>
+						<span class="big-stat-label">Automation &amp; electrical projects delivered since 2018</span>
+					</div>
+				</div>
+
+				<div class="about-photo-small" data-reveal>
+					<img
+						src="/images/about/about-story-02.jpg"
+						alt="PATech annual team meeting"
+						loading="lazy"
+						width="360"
+						height="280"
+					/>
+					<span class="small-photo-caption">Phnom Penh Nano Factory &amp; Service Hub</span>
+				</div>
 			</div>
 		</div>
 	</section>
 
-	<section class="section-space section-muted">
+	<section class="section-space section-offwhite">
 		<div class="container">
-			<SectionHeading
-				eyebrow="Our direction"
-				title="Clear intent. Lasting impact."
-				description="Our purpose shapes how we approach every project and partnership."
-			/>
-			<div class="purpose-grid">
-				<article class="purpose-card">
-					<span class="card-index">01</span>
-					<h3>Our mission</h3>
-					<p>
-						Make industry work better by solving engineering challenges with practical thinking,
-						technical depth, and a genuine commitment to the people doing the work.
-					</p>
+			<div class="section-header-split" data-reveal>
+				<div>
+					<span class="label-tag">Authorized Partnerships</span>
+					<h2 class="section-title">Certified international &amp; local partners</h2>
+				</div>
+			</div>
+
+			<div class="partner-certs-grid">
+				<article class="cert-card" data-reveal>
+					<div class="cert-copy">
+						<span class="pill-tag pill-tag-dark">Authorized Since 2022</span>
+						<h3>Authorized SAUTER System Agent for Cambodia</h3>
+						<p>
+							SAUTER (Basel, Switzerland, est. 1910) recognizes PATech as an authorized system agent in Cambodia for SAUTER building automation controls, BMS, EMS, and IBMS installations.
+						</p>
+					</div>
+					<img
+						src="/images/about/about-certificate-01.png"
+						alt="SAUTER System Agent Authorization Certificate for PATech"
+						loading="lazy"
+						width="260"
+						height="340"
+						class="cert-img"
+					/>
 				</article>
-				<article class="purpose-card">
-					<span class="card-index">02</span>
-					<h3>Our vision</h3>
-					<p>
-						A world where essential operations are safer, more efficient, and ready to adapt to
-						what comes next.
-					</p>
+
+				<article class="cert-card" data-reveal>
+					<div class="cert-copy">
+						<span class="pill-tag pill-tag-dark">Official Low-Voltage Partner</span>
+						<h3>Official CHINT Partner with SchneiTec Trading</h3>
+						<p>
+							An official partnership between PATech, SchneiTec Trading Co., Ltd., and CHINT for low-voltage switchgear and power distribution equipment across Cambodia.
+						</p>
+					</div>
+					<img
+						src="/images/about/about-certificate-02.png"
+						alt="Official CHINT and SchneiTec Partnership Certificate"
+						loading="lazy"
+						width="320"
+						height="240"
+						class="cert-img"
+					/>
 				</article>
 			</div>
 		</div>
@@ -69,34 +121,22 @@ import MainLayout from '../layouts/MainLayout.astro';
 
 	<section class="section-space">
 		<div class="container">
-			<SectionHeading
-				eyebrow="What guides us"
-				title="The way we work matters."
-				description="Good outcomes come from strong partnerships and sound engineering principles."
-			/>
-			<div class="values-grid">
-				<article><h3>Safety, always</h3><p>We put people and safe operation at the centre of every decision.</p></article>
-				<article><h3>Own the outcome</h3><p>We communicate clearly, follow through, and stay accountable to the result.</p></article>
-				<article><h3>Stay curious</h3><p>We challenge assumptions and keep learning as technology and needs evolve.</p></article>
-				<article><h3>Work as one team</h3><p>We respect your experience and make progress through open collaboration.</p></article>
+			<div class="section-header-split" data-reveal>
+				<div>
+					<span class="label-tag">Engineering Leadership</span>
+					<h2 class="section-title">Meet the engineers leading every job</h2>
+				</div>
+			</div>
+
+			<div class="leadership-grid">
+				{TEAM_AVATARS.map((member) => (
+					<article class="leader-card" data-reveal>
+						<img src={member.src} alt={member.name} width="240" height="240" loading="lazy" />
+						<h3>{member.name}</h3>
+						<span>{member.role}</span>
+					</article>
+				))}
 			</div>
 		</div>
 	</section>
-
-	<section class="capabilities-section section-space section-navy">
-		<div class="container capabilities-grid">
-			<div>
-				<p class="eyebrow eyebrow-light">Our capabilities</p>
-				<h2>From the first idea to a system that performs.</h2>
-			</div>
-			<ul class="capability-list">
-				<li>Industrial automation and control systems</li>
-				<li>Electrical and instrumentation engineering</li>
-				<li>Operational technology and systems integration</li>
-				<li>Project delivery, commissioning, and lifecycle support</li>
-			</ul>
-		</div>
-	</section>
-
-	<ContactCTA />
 </MainLayout>

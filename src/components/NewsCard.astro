@@ -1,0 +1,77 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+	item: CollectionEntry<'news'>;
+}
+
+const { item } = Astro.props;
+const { data } = item;
+const isVideo = data.contentType === 'Video';
+const formattedDate = data.publishedDate.toLocaleDateString('en-US', {
+	year: 'numeric',
+	month: 'short',
+	day: 'numeric',
+});
+---
+
+<article
+	class="news-card-v2"
+	data-news-card
+	data-type={data.contentType}
+	data-topics={(data.topics || []).join('|').toLowerCase()}
+	data-search={`${data.title} ${data.summary} ${data.source} ${(data.topics || []).join(' ')}`.toLowerCase()}
+	data-date={data.publishedDate.getTime()}
+	data-reveal
+>
+	<a href={`/news-media/${data.slug}/`} class="news-card-link">
+		<div class="notched-photo-wrap news-photo-wrap">
+			<img
+				src={data.featuredImage}
+				alt={data.featuredImageAlt || data.title}
+				loading="lazy"
+				width="640"
+				height="400"
+				class="notched-photo-img"
+			/>
+			<span class="notch-cutout" aria-hidden="true">
+				<span class="notch-yellow-btn">
+					{isVideo ? (
+						<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+							<polygon points="6 4 20 12 6 20 6 4"></polygon>
+						</svg>
+					) : (
+						<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+							<line x1="7" y1="17" x2="17" y2="7"></line>
+							<polyline points="7 7 17 7 17 17"></polyline>
+						</svg>
+					)}
+				</span>
+			</span>
+			<span class={`news-type-badge ${isVideo ? 'is-video' : 'is-article'}`}>
+				{isVideo ? `▶ Video · ${data.source}` : 'Article'}
+			</span>
+		</div>
+
+		<div class="news-card-body">
+			<div class="news-meta-line">
+				<span>{data.contentType}</span>
+				<span aria-hidden="true">·</span>
+				<span>{data.source}</span>
+				<span aria-hidden="true">·</span>
+				<time datetime={data.publishedDate.toISOString()}>{formattedDate}</time>
+			</div>
+
+			<h3>{data.title}</h3>
+			<p>{data.summary}</p>
+
+			{data.topics && data.topics.length > 0 && (
+				<div class="news-topic-row">
+					{data.topics.slice(0, 3).map((topic) => (
+						<span class="news-topic-pill">{topic}</span>
+					))}
+				</div>
+			)}
+		</div>
+	</a>
+</article>

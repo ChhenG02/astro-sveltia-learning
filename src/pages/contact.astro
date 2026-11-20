@@ -1,64 +1,118 @@
 ---
+import { CONTACT_INFO, FAQS, SITE_TITLE } from '../consts';
 import MainLayout from '../layouts/MainLayout.astro';
 ---
 
 <MainLayout
-	title="Contact Northline Engineering"
-	description="Get in touch with Northline Engineering to discuss an engineering, automation, or technology project."
+	title={`Contact & Get a Quote | ${SITE_TITLE}`}
+	description="Request a free on-site survey or quotation from PATech in Phnom Penh for factory automation, SAUTER BMS, or custom electrical panels."
 >
-	<header class="page-hero">
-		<div class="container page-hero-content">
-			<p class="eyebrow">Contact</p>
-			<h1>Let’s talk about what you’re working on.</h1>
-			<p class="lead">
-				Share a challenge, an early idea, or a project already underway. We’ll connect you with the
-				right person on our team.
-			</p>
+	<header class="page-header-v2 section-space-top">
+		<div class="container">
+			<div class="page-header-grid" data-reveal>
+				<div>
+					<span class="label-tag">Contact &amp; Free Site Survey</span>
+					<h1>Talk directly with our engineering team.</h1>
+				</div>
+				<div class="page-header-side">
+					<p>
+						No call centers or sales scripts. Share your site location, drawings, or breakdown issue and an engineer will reply within one business day (or immediately for 24/7 emergencies).
+					</p>
+				</div>
+			</div>
 		</div>
 	</header>
 
 	<section class="section-space">
-		<div class="container contact-grid">
-			<div class="contact-details">
-				<p class="eyebrow">Get in touch</p>
-				<h2>Start a conversation.</h2>
-				<p class="lead">We’re ready to listen and help you find a practical next step.</p>
-				<dl>
-					<div><dt>Email</dt><dd><a href="mailto:hello@northline.example">hello@northline.example</a></dd></div>
-					<div><dt>Phone</dt><dd><a href="tel:+15550140142">+1 (555) 014-0142</a></dd></div>
-					<div><dt>Office</dt><dd>Toronto, Ontario<br />Serving clients across North America</dd></div>
-				</dl>
-				<p class="contact-note">Northline is a sample company identity. Update these contact details before publishing.</p>
+		<div class="container contact-grid-v2">
+			<div class="contact-form-card" data-reveal>
+				<h2>Request a custom quote</h2>
+				<p class="form-sub">Site surveys and quotations are free across Phnom Penh and provinces.</p>
+
+				<form class="quote-form-v2" action="#" method="post" onsubmit="event.preventDefault(); this.classList.add('is-sent');">
+					<div class="form-row-two">
+						<label>
+							<span>Full name *</span>
+							<input type="text" name="name" required placeholder="Your name" />
+						</label>
+						<label>
+							<span>Phone / Telegram *</span>
+							<input type="tel" name="phone" required placeholder="+855 ..." />
+						</label>
+					</div>
+
+					<div class="form-row-two">
+						<label>
+							<span>Company / Facility</span>
+							<input type="text" name="company" placeholder="Factory or building name" />
+						</label>
+						<label>
+							<span>Service needed</span>
+							<select name="service">
+								<option value="Factory Automation">Factory Automation (PLC / SCADA / Robotics)</option>
+								<option value="Building Automation">Building Automation (SAUTER BMS / EMS)</option>
+								<option value="Electrical Power Panels">Electrical Power Panels (MSB / MDB / ATS / MCC)</option>
+								<option value="24/7 Emergency Support">24/7 Emergency Troubleshooting</option>
+							</select>
+						</label>
+					</div>
+
+					<label>
+						<span>Project details *</span>
+						<textarea
+							name="message"
+							rows="4"
+							required
+							placeholder="Tell us about your machine, switchboard rating, site location, and timeline..."
+						></textarea>
+					</label>
+
+					<button type="submit" class="btn-secondary">
+						<span>Send Request to Engineers</span>
+						<span class="btn-arrow-circle" aria-hidden="true">↗</span>
+					</button>
+
+					<p class="form-success-msg" role="status">
+						✓ Thank you! Your request has been noted. For immediate assistance, call <a href={CONTACT_INFO.phoneHref}>{CONTACT_INFO.phone}</a> or message <a href={CONTACT_INFO.telegramHref}>{CONTACT_INFO.telegram}</a>.
+					</p>
+				</form>
 			</div>
 
-			<form class="contact-form" action="mailto:hello@northline.example" method="post" enctype="text/plain">
-				<h2>Send us a note</h2>
-				<p>Your email app will open with your message addressed to our team.</p>
-				<div class="form-field">
-					<label for="name">Your name</label>
-					<input id="name" name="name" autocomplete="name" required />
+			<aside class="contact-info-stack" data-reveal>
+				<div class="contact-cream-card">
+					<span class="label-tag">24/7 Engineering Hotline</span>
+					<h3><a href={CONTACT_INFO.phoneHref}>{CONTACT_INFO.phone}</a></h3>
+					<p>Secondary line: <a href={CONTACT_INFO.phoneAltHref}>{CONTACT_INFO.phoneAlt}</a></p>
+					<p>Email: <a href={`mailto:${CONTACT_INFO.email}`}>{CONTACT_INFO.email}</a></p>
+					<p>Telegram: <a href={CONTACT_INFO.telegramHref} target="_blank" rel="noopener noreferrer">{CONTACT_INFO.telegram}</a></p>
 				</div>
-				<div class="form-field">
-					<label for="email">Work email</label>
-					<input id="email" name="email" type="email" autocomplete="email" required />
+
+				<div class="contact-cream-card">
+					<span class="label-tag">PATech Nano Factory · Phnom Penh</span>
+					<p><strong>{CONTACT_INFO.address}</strong></p>
+					<p class="contact-directions">{CONTACT_INFO.directions}</p>
+					<p class="contact-hours">{CONTACT_INFO.hours}</p>
 				</div>
-				<div class="form-field">
-					<label for="subject">What can we help with?</label>
-					<select id="subject" name="subject" required>
-						<option value="" selected disabled>Select a service</option>
-						<option>Automation and controls</option>
-						<option>Electrical engineering</option>
-						<option>Systems integration</option>
-						<option>Project delivery</option>
-						<option>Something else</option>
-					</select>
-				</div>
-				<div class="form-field">
-					<label for="message">A little about your project</label>
-					<textarea id="message" name="message" rows="5" required></textarea>
-				</div>
-				<button class="button button-primary" type="submit">Continue to email <span aria-hidden="true">→</span></button>
-			</form>
+
+				<a
+					href={CONTACT_INFO.mapUrl}
+					target="_blank"
+					rel="noopener noreferrer"
+					class="contact-map-card notched-photo-wrap"
+				>
+					<img
+						src="/images/contact/map-directions.png"
+						alt="Map directions to PATech Nano Factory near AEON Mall Sen Sok"
+						loading="lazy"
+						width="550"
+						height="360"
+						class="notched-photo-img"
+					/>
+					<span class="notch-cutout" aria-hidden="true">
+						<span class="notch-yellow-btn">↗</span>
+					</span>
+				</a>
+			</aside>
 		</div>
 	</section>
 </MainLayout>

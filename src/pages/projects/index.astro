@@ -1,83 +1,101 @@
 ---
-import ContactCTA from '../../components/ContactCTA.astro';
-import ProjectCard from '../../components/ProjectCard.astro';
-import SectionHeading from '../../components/SectionHeading.astro';
 import { getCollection } from 'astro:content';
+import ProjectCard from '../../components/ProjectCard.astro';
+import { SITE_TITLE } from '../../consts';
 import MainLayout from '../../layouts/MainLayout.astro';
 
 const projects = (await getCollection('projects', ({ data }) => !data.draft)).sort(
 	(a, b) => a.data.sortOrder - b.data.sortOrder,
 );
-const categories = [...new Set(projects.map((project) => project.data.category))];
+const categories = [...new Set(projects.map((p) => p.data.category))];
 ---
 
 <MainLayout
-	title="Engineering Projects | Northline Engineering"
-	description="Explore a selection of Northline Engineering's industrial automation, energy, and infrastructure project work."
+	title={`Projects Portfolio | ${SITE_TITLE}`}
+	description="Explore PATech's robotics, factory automation, water SCADA, SAUTER BMS, and 5000A electrical power projects across Cambodia."
 >
-	<header class="page-hero">
-		<div class="container page-hero-content">
-			<p class="eyebrow">Selected projects</p>
-			<h1>Good engineering, put to work.</h1>
-			<p class="lead">
-				Every project starts with a different challenge. What stays constant is our focus on
-				practical outcomes and long-term performance.
-			</p>
+	<header class="page-header-v2 section-space-top">
+		<div class="container">
+			<div class="page-header-grid" data-reveal>
+				<div>
+					<span class="label-tag">Projects Portfolio · 1,000+ Delivered</span>
+					<h1>Real engineering work on real sites.</h1>
+				</div>
+				<div class="page-header-side">
+					<p>
+						Browse our commissioned systems across steel fabrication, municipal water treatment, cement manufacturing, commercial buildings, and industrial solar.
+					</p>
+					<div class="cms-quick-bar">
+						<a href="/admin/#/collections/projects" class="pill-filter-btn">
+							+ Add or Edit Projects in CMS ↗
+						</a>
+					</div>
+				</div>
+			</div>
+
+			<!-- Category Filter Pills -->
+			<div class="filter-bar-v2" role="group" aria-label="Filter projects by category" data-reveal>
+				<button
+					type="button"
+					class="pill-filter-btn is-active"
+					data-project-filter="all"
+					aria-pressed="true"
+				>
+					All Projects ({projects.length})
+				</button>
+				{categories.map((category) => (
+					<button
+						type="button"
+						class="pill-filter-btn"
+						data-project-filter={category}
+						aria-pressed="false"
+					>
+						{category}
+					</button>
+				))}
+			</div>
 		</div>
 	</header>
 
 	<section class="section-space">
 		<div class="container">
-			<SectionHeading
-				eyebrow="Our work"
-				title="Built around real operating needs."
-				description="Browse a sample of the project environments and engineering challenges we support."
-			/>
-			<div class="project-filters" role="group" aria-label="Filter projects by category">
-				<button class="filter-button is-active" type="button" data-project-filter="all" aria-pressed="true">All projects</button>
-				{categories.map((category) => (
-					<button class="filter-button" type="button" data-project-filter={category} aria-pressed="false">
-						{category}
-					</button>
+			<div class="projects-staggered-grid">
+				{projects.map((project, index) => (
+					<div data-project-item data-category={project.data.category}>
+						<ProjectCard project={project} staggerIndex={index} />
+					</div>
 				))}
 			</div>
-			<div class="project-grid project-grid-list">
-				{projects.map((project) => (
-					<article data-project-card data-category={project.data.category}>
-						<ProjectCard project={project} />
-					</article>
-				))}
-			</div>
-			<p class="filter-status" aria-live="polite"></p>
+			<p class="filter-status" id="project-filter-status" aria-live="polite"></p>
 		</div>
 	</section>
-
-	<ContactCTA />
 </MainLayout>
 
 <script>
-	const filterButtons = document.querySelectorAll<HTMLButtonElement>('[data-project-filter]');
-	const projectCards = document.querySelectorAll<HTMLElement>('[data-project-card]');
-	const filterStatus = document.querySelector<HTMLElement>('.filter-status');
+	const buttons = document.querySelectorAll<HTMLButtonElement>('[data-project-filter]');
+	const items = document.querySelectorAll<HTMLElement>('[data-project-item]');
+	const status = document.getElementById('project-filter-status');
 
-	filterButtons.forEach((button) => {
+	buttons.forEach((button) => {
 		button.addEventListener('click', () => {
-			const selectedCategory = button.dataset.projectFilter;
-			let visibleCount = 0;
+			const selected = button.dataset.projectFilter;
+			let count = 0;
 
-			filterButtons.forEach((filterButton) => {
-				const isSelected = filterButton === button;
-				filterButton.classList.toggle('is-active', isSelected);
-				filterButton.setAttribute('aria-pressed', String(isSelected));
+			buttons.forEach((btn) => {
+				const active = btn === button;
+				btn.classList.toggle('is-active', active);
+				btn.setAttribute('aria-pressed', String(active));
 			});
 
-			projectCards.forEach((card) => {
-				const isVisible = selectedCategory === 'all' || card.dataset.category === selectedCategory;
-				card.hidden = !isVisible;
-				if (isVisible) visibleCount += 1;
+			items.forEach((item) => {
+				const show = selected === 'all' || item.dataset.category === selected;
+				item.hidden = !show;
+				if (show) count++;
 			});
 
-			if (filterStatus) filterStatus.textContent = `${visibleCount} project${visibleCount === 1 ? '' : 's'} shown`;
+			if (status) {
+				status.textContent = `Showing ${count} project${count === 1 ? '' : 's'}`;
+			}
 		});
 	});
 </script>

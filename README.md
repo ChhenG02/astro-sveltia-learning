@@ -1,54 +1,37 @@
-# Northline Engineering
+# PATech Website v2 (Astro + Sveltia CMS)
 
-A static Astro website with Sveltia CMS for managing project, service, discipline, and news content. Astro renders the website from local Markdown content collections; Sveltia CMS edits those same files in a browser.
+Modern, high-trust static website and content management system (CMS) for **PATech (Pisnuk AutoTech Co., Ltd.)**, duplicated and upgraded from `astro-sveltia-learning`.
 
-## Run locally
+## Design System & Highlights
 
-```sh
-pnpm dev
-pnpm build
-pnpm preview
+- **Palette**: White (`#FFFFFF`) & off-white (`#FAFAFA`) canvas, near-black (`#0A0A0A`) ink & primary pill buttons, amber yellow (`#FDB827`) accents, soft cream (`#FAF6EE`) & light gray (`#F2F3F5`) cards, electric-blue gradient (`#0A3CFF` → `#0B1F5C`) CTA banner, and deep navy (`#0B1220`) footer.
+- **Signature Visual Details**:
+  - `24px` rounded photo and card frames with a **top-right notched corner** housing a yellow circular diagonal-arrow button (`↗`) that rotates on hover.
+  - Tilted sticker tags (`Professional work`, `First workmanship`, `24/7 emergency calls`) in sky blue, soft pink, and lime.
+  - Frosted-glass (glassmorphism) hero badge with `8+ Yrs`, 5 overlapping PATech leadership avatars, and `Professional Licensed · 1,000+ Projects Delivered`.
+  - Asymmetric **About Story** collage (`Engineers first. Salespeople never.`) with `80px` stats (`100%` and `4.9/5`).
+  - Staggered 3-card **Services** showcase (`Factory Automation`, `Building Automation`, `Electrical Power Panels`) with the middle card offset upward.
+  - Diagonal cascade of 4 soft-cream **Why Choose Us** cards (`Safety first`, `Skilled Experts`, `24/7 Support`, `Transparent Pricing`) paired with a cut-corner switchboard photo at the bottom left.
+  - **Testimonials** carousel with 5 yellow stars and overlapping bottom name chips (with the middle chip highlighted in amber yellow).
+  - **Final CTA Banner** overlapping the top of the deep-navy footer with a giant faded `PATECH` watermark bleeding across both sections.
+
+## Sveltia CMS (Projects, News & Media, Services, Testimonials)
+
+All dynamic collections are managed via **Sveltia CMS** at `/admin/`:
+
+- **Config**: `public/admin/config.yml` & `public/admin/index.html`
+- **Schema Validation**: `src/content.config.ts`
+- **Collections**:
+  1. **Projects** (`src/content/projects/*.md`) — Displayed on the home page, `/projects/`, and `/projects/[slug]/` with category filters, challenge/solution cards, results checklist, and gallery.
+  2. **News & Media** (`src/content/news/*.md`) — Displayed on the home page, `/news-media/`, and `/news-media/[slug]/` with search, `All / Articles / Videos` tabs, topic filter chips, and embedded YouTube/Facebook video support.
+  3. **Services** (`src/content/services/*.md`) — Displayed on the home page and `/services/`.
+  4. **Testimonials** (`src/content/testimonials/*.md`) — Displayed in the home page testimonials carousel.
+
+## Commands
+
+```bash
+cd /Users/macbookair/Documents/PAtech/patech-website-v2
+pnpm run dev      # Start local dev server (http://localhost:4321 & http://localhost:4321/admin/)
+pnpm run build    # Build static site to dist/
+pnpm run preview  # Preview production build
 ```
-
-### Open Sveltia CMS
-
-1. Start the Astro development server with `pnpm dev`.
-2. In Google Chrome, Microsoft Edge, or another Chromium-based browser, open `http://localhost:4321/admin/index.html`.
-3. Choose **Work with Local Repository**, then select this project’s root folder (the folder containing `.git`).
-4. Edit or create entries, then save. Sveltia writes the changed Markdown and uploaded media into this local project.
-5. Review the changes with `git status` / `git diff` and commit them with Git when ready.
-
-This workspace has a local Git repository initialized and no remote configured. Sveltia’s local workflow requires Git and Chromium’s File System Access API; it does not work in Safari or Firefox. No GitHub sign-in, OAuth application, proxy, or remote repository is configured. The CMS configuration contains a placeholder GitHub repository identifier only because Sveltia requires a supported backend definition; use **Work with Local Repository**, not either sign-in option. See the [official local workflow guide](https://sveltiacms.app/en/docs/workflows/local) and [Astro integration guide](https://sveltiacms.app/en/docs/frameworks/astro).
-
-## Routes
-
-| Route | Purpose |
-| --- | --- |
-| `/` | Company introduction, featured services and projects |
-| `/about/` | Company story, mission, vision, values, and capabilities |
-| `/services/` | Service summaries and Markdown descriptions |
-| `/projects/` | Portfolio with category filters |
-| `/projects/[slug]/` | Static project detail pages generated from project entries |
-| `/contact/` | Contact details and a mailto-based contact form |
-
-## Content architecture
-
-- `src/content.config.ts` defines four build-time collections with schemas from `astro/zod` and Astro’s `glob()` loader.
-- `src/content/projects/`, `src/content/services/`, and `src/content/partners/` contain the migrated site content as Markdown with YAML frontmatter. `src/content/news/` is ready for future news; its initial article is an unpublished example draft.
-- `src/pages/` queries collections with `getCollection()`. Project details use `getStaticPaths()` and `render()` to build a page per project slug and render its Markdown body.
-- `public/admin/index.html` loads Sveltia CMS from its official CDN. `public/admin/config.yml` defines the matching CMS collections and fields.
-- CMS uploads go to `public/uploads/` and are referenced by `/uploads/...` paths. Existing Unsplash URLs remain unchanged. The schema accepts both URL forms; public-folder uploads are served as-is rather than transformed by Astro.
-- The `partners` collection holds the existing engineering-discipline labels. Optional logo, website, and description fields are available without inventing vendor partnerships.
-
-Sveltia saves changes to the selected local repository; it does not publish or push them. You must review and commit changes yourself. Content changes are not considered published until your site is rebuilt and deployed.
-
-The contact form opens the visitor’s default email application and does not submit data to a server. Replace the sample `.example` contact details, project copy, and Unsplash imagery before publishing.
-
-## Files to study first
-
-1. `src/content.config.ts` — collection loaders and validation schemas.
-2. `public/admin/config.yml` — editor collections, fields, and upload paths.
-3. `src/content/projects/precision-assembly-line.md` — an entry’s frontmatter and Markdown body.
-4. `src/pages/projects/[slug].astro` — collection querying, static paths, and Markdown rendering.
-5. `src/pages/projects/index.astro` and `src/pages/services.astro` — collection-driven listings.
-6. `src/components/ProjectCard.astro` and `src/components/ServiceCard.astro` — typed collection entry props and reusable UI.

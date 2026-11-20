@@ -1,0 +1,188 @@
+---
+import { getCollection } from 'astro:content';
+import NewsCard from '../../components/NewsCard.astro';
+import { SITE_TITLE } from '../../consts';
+import MainLayout from '../../layouts/MainLayout.astro';
+
+const newsItems = (await getCollection('news', ({ data }) => !data.draft)).sort(
+	(a, b) => b.data.publishedDate.getTime() - a.data.publishedDate.getTime(),
+);
+
+const articlesCount = newsItems.filter((item) => item.data.contentType === 'Article').length;
+const videosCount = newsItems.filter((item) => item.data.contentType === 'Video').length;
+
+// Aggregate unique topics
+const topicCounts = new Map<string, number>();
+for (const item of newsItems) {
+	for (const topic of item.data.topics || []) {
+		topicCounts.set(topic, (topicCounts.get(topic) || 0) + 1);
+	}
+}
+const allTopics = Array.from(topicCounts.entries())
+	.sort((a, b) => b[1] - a[1])
+	.map(([topic]) => topic);
+---
+
+<MainLayout
+	title={`News & Media | ${SITE_TITLE}`}
+	description="Browse PATech engineering articles, technical guides, YouTube episodes, and Facebook video updates."
+>
+	<header class="page-header-v2 section-space-top">
+		<div class="container">
+			<div class="page-header-grid" data-reveal>
+				<div>
+					<span class="label-tag">News &amp; Media · Articles &amp; Video Episodes</span>
+					<h1>Technical insights straight from our engineers.</h1>
+				</div>
+				<div class="page-header-side">
+					<p>
+						Field notes on 5000A electrical panels, digital panel meters, SCADA architecture, and fiber laser automation—in both Khmer and English.
+					</p>
+					<div class="cms-quick-bar">
+						<a href="/admin/#/collections/news" class="pill-filter-btn">
+							+ Publish Article or Video in CMS ↗
+						</a>
+					</div>
+				</div>
+			</div>
+
+			<!-- Unified News & Media Toolbar: Search + Content Type Tabs + Topic Chips -->
+			<div class="news-toolbar-v2" data-reveal>
+				<div class="news-toolbar-top">
+					<div class="news-search-wrap">
+						<label for="news-search-input" class="sr-only">Search articles and videos</label>
+						<svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+							<circle cx="11" cy="11" r="8"></circle>
+							<line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+						</svg>
+						<input
+							id="news-search-input"
+							type="search"
+							placeholder="Search articles, videos, or topics..."
+							class="news-search-input"
+						/>
+					</div>
+
+					<div class="news-type-tabs" role="tablist" aria-label="Filter by content type">
+						<button type="button" class="type-tab-btn is-active" data-type-filter="all">
+							All <span>{newsItems.length}</span>
+						</button>
+						<button type="button" class="type-tab-btn" data-type-filter="Article">
+							Articles <span>{articlesCount}</span>
+						</button>
+						<button type="button" class="type-tab-btn" data-type-filter="Video">
+							Videos <span>{videosCount}</span>
+						</button>
+					</div>
+				</div>
+
+				{allTopics.length > 0 && (
+					<div class="news-topics-filter" role="group" aria-label="Filter by topic">
+						<span class="topics-label">Topics:</span>
+						<button type="button" class="topic-chip-btn is-active" data-topic-filter="all">
+							All Topics
+						</button>
+						{allTopics.map((topic) => (
+							<button type="button" class="topic-chip-btn" data-topic-filter={topic.toLowerCase()}>
+								{topic}
+							</button>
+						))}
+					</div>
+				)}
+			</div>
+		</div>
+	</header>
+
+	<section class="section-space">
+		<div class="container">
+			<div class="news-results-bar">
+				<p id="news-count-status" aria-live="polite">
+					Showing <strong>{newsItems.length}</strong> items
+				</p>
+			</div>
+
+			<div class="news-grid-three" id="news-cards-grid">
+				{newsItems.map((item) => (
+					<NewsCard item={item} />
+				))}
+			</div>
+
+			<div class="empty-filter-box" id="news-empty-state" hidden>
+				<h3>No matching articles or videos found</h3>
+				<p>Try clearing your search query or switching back to All Topics.</p>
+				<button type="button" class="btn-primary" id="news-reset-btn">Reset All Filters</button>
+			</div>
+		</div>
+	</section>
+</MainLayout>
+
+<script>
+	const searchInput = document.getElementById('news-search-input') as HTMLInputElement | null;
+	const typeBtns = document.querySelectorAll<HTMLButtonElement>('[data-type-filter]');
+	const topicBtns = document.querySelectorAll<HTMLButtonElement>('[data-topic-filter]');
+	const cards = document.querySelectorAll<HTMLElement>('[data-news-card]');
+	const countStatus = document.getElementById('news-count-status');
+	const emptyState = document.getElementById('news-empty-state');
+	const resetBtn = document.getElementById('news-reset-btn');
+
+	let activeType = 'all';
+	let activeTopic = 'all';
+	let searchQuery = '';
+
+	function applyFilters() {
+		let visible = 0;
+		const q = searchQuery.trim().toLowerCase();
+
+		cards.forEach((card) => {
+			const cType = card.dataset.type || '';
+			const cTopics = (card.dataset.topics || '').split('|');
+			const cSearch = card.dataset.search || '';
+
+			const matchType = activeType === 'all' || cType === activeType;
+			const matchTopic = activeTopic === 'all' || cTopics.includes(activeTopic);
+			const matchSearch = !q || cSearch.includes(q);
+
+			const show = matchType && matchTopic && matchSearch;
+			card.hidden = !show;
+			if (show) visible++;
+		});
+
+		if (countStatus) {
+			countStatus.innerHTML = `Showing <strong>${visible}</strong> ${visible === 1 ? 'item' : 'items'}`;
+		}
+		if (emptyState) {
+			emptyState.hidden = visible > 0;
+		}
+	}
+
+	typeBtns.forEach((btn) => {
+		btn.addEventListener('click', () => {
+			activeType = btn.dataset.typeFilter || 'all';
+			typeBtns.forEach((b) => b.classList.toggle('is-active', b === btn));
+			applyFilters();
+		});
+	});
+
+	topicBtns.forEach((btn) => {
+		btn.addEventListener('click', () => {
+			activeTopic = btn.dataset.topicFilter || 'all';
+			topicBtns.forEach((b) => b.classList.toggle('is-active', b === btn));
+			applyFilters();
+		});
+	});
+
+	searchInput?.addEventListener('input', () => {
+		searchQuery = searchInput.value;
+		applyFilters();
+	});
+
+	resetBtn?.addEventListener('click', () => {
+		activeType = 'all';
+		activeTopic = 'all';
+		searchQuery = '';
+		if (searchInput) searchInput.value = '';
+		typeBtns.forEach((b) => b.classList.toggle('is-active', b.dataset.typeFilter === 'all'));
+		topicBtns.forEach((b) => b.classList.toggle('is-active', b.dataset.topicFilter === 'all'));
+		applyFilters();
+	});
+</script>

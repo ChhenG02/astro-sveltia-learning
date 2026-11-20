@@ -3,28 +3,56 @@ import { SITE_TITLE } from '../consts';
 import HeaderLink from './HeaderLink.astro';
 ---
 
-<header class="site-header">
+<header class="site-header" id="site-header">
 	<div class="container header-inner">
 		<a class="brand" href="/" aria-label={`${SITE_TITLE} home`}>
-			<span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
-			<span class="brand-name">NORTHLINE<span>ENGINEERING</span></span>
+			<img
+				src="/images/brand/patech-logo.png"
+				alt="PATech – Pisnuk AutoTech"
+				class="brand-logo"
+				width="150"
+				height="40"
+			/>
 		</a>
+
 		<nav class="desktop-nav" aria-label="Main navigation">
-			<HeaderLink href="/">Home</HeaderLink>
 			<HeaderLink href="/about/">About</HeaderLink>
 			<HeaderLink href="/services/">Services</HeaderLink>
 			<HeaderLink href="/projects/">Projects</HeaderLink>
+			<HeaderLink href="/news-media/">News &amp; Media</HeaderLink>
+			<a href="/#faqs" class="nav-link">FAQ's</a>
+			<HeaderLink href="/contact/">Contact</HeaderLink>
 		</nav>
-		<a class="button button-small button-primary header-cta" href="/contact/">Let’s talk <span aria-hidden="true">→</span></a>
+
+		<div class="header-actions">
+			<a class="btn-primary" href="/contact/">Get a Quote</a>
+		</div>
+
 		<details class="mobile-nav">
-			<summary aria-label="Navigation menu"><span></span><span></span></summary>
+			<summary aria-label="Toggle navigation menu">
+				<span></span>
+				<span></span>
+			</summary>
 			<nav aria-label="Mobile navigation">
 				<HeaderLink href="/">Home</HeaderLink>
 				<HeaderLink href="/about/">About</HeaderLink>
 				<HeaderLink href="/services/">Services</HeaderLink>
 				<HeaderLink href="/projects/">Projects</HeaderLink>
-				<a class="button button-small button-primary nav-contact" href="/contact/">Let’s talk <span aria-hidden="true">→</span></a>
+				<HeaderLink href="/news-media/">News &amp; Media</HeaderLink>
+				<a href="/#faqs">FAQ's</a>
+				<HeaderLink href="/contact/">Contact</HeaderLink>
+				<a class="btn-primary mobile-cta" href="/contact/">Get a Quote</a>
 			</nav>
 		</details>
 	</div>
 </header>
+
+<script>
+	const header = document.getElementById('site-header');
+	const onScroll = () => {
+		if (!header) return;
+		header.classList.toggle('is-scrolled', window.scrollY > 16);
+	};
+	window.addEventListener('scroll', onScroll, { passive: true });
+	onScroll();
+</script>

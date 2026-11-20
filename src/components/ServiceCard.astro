@@ -3,16 +3,38 @@ import type { CollectionEntry } from 'astro:content';
 
 interface Props {
 	service: CollectionEntry<'services'>['data'];
-	detailed?: boolean;
+	index?: number;
 }
 
-const { service, detailed = false } = Astro.props;
+const { service, index = 0 } = Astro.props;
 ---
 
-<article class:list={['service-card', { 'service-card-detailed': detailed }]}>
-	<span class="service-number">{service.number}</span>
-	<h3>{service.title}</h3>
-	<p>{service.summary}</p>
-	{detailed && <div class="service-description"><slot /></div>}
-	<a class="text-link" href="/services/">Explore this service <span aria-hidden="true">→</span></a>
+<article class={`service-tall-card ${index === 1 ? 'is-middle-offset' : ''}`} data-reveal>
+	<a href={`/services/#${service.slug}`} class="service-tall-link" aria-label={service.title}>
+		<img
+			src={service.coverImage}
+			alt={service.coverImageAlt}
+			loading="lazy"
+			width="640"
+			height="820"
+			class="service-tall-img"
+		/>
+		<div class="service-tall-gradient" aria-hidden="true"></div>
+
+		<span class="notch-cutout" aria-hidden="true">
+			<span class="notch-yellow-btn">
+				<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+					<line x1="7" y1="17" x2="17" y2="7"></line>
+					<polyline points="7 7 17 7 17 17"></polyline>
+				</svg>
+			</span>
+		</span>
+
+		<span class="service-number-chip">{service.number}</span>
+
+		<div class="service-tall-content">
+			<h3>{service.shortTitle}</h3>
+			<p>{service.summary}</p>
+		</div>
+	</a>
 </article>

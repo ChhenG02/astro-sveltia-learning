@@ -7,14 +7,18 @@ const projects = defineCollection({
 	schema: z.object({
 		title: z.string().min(1),
 		slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
-		description: z.string().min(1),
+		client: z.string().optional(),
 		category: z.string().min(1),
 		location: z.string().min(1),
 		year: z.string().min(1),
 		scope: z.string().min(1),
-		publishedDate: z.coerce.date().optional(),
-		sortOrder: z.number().int().positive(),
-		featured: z.boolean().default(false),
+		summary: z.string().min(1),
+		challenge: z.string().optional(),
+		solution: z.string().optional(),
+		results: z.array(z.string()).default([]),
+		services: z.array(z.string()).default([]),
+		sortOrder: z.number().int().positive().default(1),
+		featured: z.boolean().default(true),
 		draft: z.boolean().default(false),
 		coverImage: z.string().min(1),
 		coverImageAlt: z.string().min(1),
@@ -29,42 +33,55 @@ const projects = defineCollection({
 	}),
 });
 
-const services = defineCollection({
-	loader: glob({ base: './src/content/services', pattern: '**/*.md' }),
-	schema: z.object({
-		number: z.string().regex(/^\d{2}$/),
-		title: z.string().min(1),
-		slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
-		summary: z.string().min(1),
-		icon: z.enum(['automation', 'electrical', 'integration', 'delivery', 'modernization', 'technology']),
-		featured: z.boolean().default(false),
-		draft: z.boolean().default(false),
-	}),
-});
-
-const partners = defineCollection({
-	loader: glob({ base: './src/content/partners', pattern: '**/*.md' }),
-	schema: z.object({
-		name: z.string().min(1),
-		slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
-		sortOrder: z.number().int().positive(),
-		logo: z.string().optional(),
-		website: z.string().url().optional(),
-		description: z.string().optional(),
-	}),
-});
-
 const news = defineCollection({
 	loader: glob({ base: './src/content/news', pattern: '**/*.md' }),
 	schema: z.object({
 		title: z.string().min(1),
 		slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
-		description: z.string().min(1),
-		coverImage: z.string().optional(),
+		summary: z.string().min(1),
+		contentType: z.enum(['Article', 'Video']).default('Article'),
+		source: z.string().default('PATech'),
 		publishedDate: z.coerce.date(),
-		tags: z.array(z.string()).default([]),
+		featuredImage: z.string().min(1),
+		featuredImageAlt: z.string().default('PATech News & Media'),
+		externalUrl: z.string().optional(),
+		embedUrl: z.string().optional(),
+		linkLabel: z.string().optional(),
+		topics: z.array(z.string()).default([]),
+		featured: z.boolean().default(true),
 		draft: z.boolean().default(false),
 	}),
 });
 
-export const collections = { projects, services, partners, news };
+const services = defineCollection({
+	loader: glob({ base: './src/content/services', pattern: '**/*.md' }),
+	schema: z.object({
+		number: z.string().regex(/^\d{2}$/),
+		title: z.string().min(1),
+		shortTitle: z.string().min(1),
+		slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
+		summary: z.string().min(1),
+		coverImage: z.string().min(1),
+		coverImageAlt: z.string().min(1),
+		highlights: z.array(z.string()).default([]),
+		featured: z.boolean().default(true),
+		draft: z.boolean().default(false),
+	}),
+});
+
+const testimonials = defineCollection({
+	loader: glob({ base: './src/content/testimonials', pattern: '**/*.md' }),
+	schema: z.object({
+		name: z.string().min(1),
+		slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
+		role: z.string().min(1),
+		projectType: z.string().min(1),
+		quote: z.string().min(1),
+		rating: z.number().int().min(1).max(5).default(5),
+		avatar: z.string().min(1),
+		highlight: z.boolean().default(false),
+		sortOrder: z.number().int().positive().default(1),
+	}),
+});
+
+export const collections = { projects, news, services, testimonials };

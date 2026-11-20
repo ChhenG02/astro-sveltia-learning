@@ -1,68 +1,104 @@
 ---
-import ContactCTA from '../components/ContactCTA.astro';
-import SectionHeading from '../components/SectionHeading.astro';
-import ServiceCard from '../components/ServiceCard.astro';
 import { getCollection, render } from 'astro:content';
+import ServiceCard from '../components/ServiceCard.astro';
+import { SITE_TITLE } from '../consts';
 import MainLayout from '../layouts/MainLayout.astro';
 
-const services = (await getCollection('services', ({ data }) => !data.draft)).sort(
-	(a, b) => a.data.number.localeCompare(b.data.number),
+const services = (await getCollection('services', ({ data }) => !data.draft)).sort((a, b) =>
+	a.data.number.localeCompare(b.data.number),
 );
-const detailedServices = await Promise.all(
-	services.map(async (service) => ({
-		service,
-		Content: (await render(service)).Content,
-	})),
+
+const renderedServices = await Promise.all(
+	services.map(async (service) => {
+		const { Content } = await render(service);
+		return { service, Content };
+	}),
 );
 ---
 
 <MainLayout
-	title="Engineering Services | Northline Engineering"
-	description="Explore Northline's industrial automation, electrical engineering, systems integration, and project delivery services."
+	title={`Engineering Services | ${SITE_TITLE}`}
+	description="Factory automation, industrial robotics, SAUTER building automation (BMS/EMS), and custom 5000A electrical power panels by PATech in Cambodia."
 >
-	<header class="page-hero">
-		<div class="container page-hero-content">
-			<p class="eyebrow">Our services</p>
-			<h1>Engineering that meets the moment—and what comes after.</h1>
-			<p class="lead">
-				We connect technical disciplines to help you improve performance, manage risk, and deliver
-				essential projects with confidence.
-			</p>
+	<header class="page-header-v2 section-space-top">
+		<div class="container">
+			<div class="page-header-grid" data-reveal>
+				<div>
+					<span class="label-tag">Our Capabilities · 3 Core Divisions</span>
+					<h1>Complete automation &amp; power solutions.</h1>
+				</div>
+				<div class="page-header-side">
+					<p>
+						One accountable team from site survey and electrical CAD drawings to in-house panel assembly, PLC/SCADA programming, and 24/7 after-sales support.
+					</p>
+					<a class="btn-secondary" href="/contact/">
+						<span>Request a Free Site Survey</span>
+						<span class="btn-arrow-circle" aria-hidden="true">↗</span>
+					</a>
+				</div>
+			</div>
 		</div>
 	</header>
 
 	<section class="section-space">
 		<div class="container">
-			<SectionHeading
-				eyebrow="How we help"
-				title="The right expertise, working together."
-				description="Bring us a defined scope or an early-stage challenge. We can support one discipline or build an integrated team around your needs."
-			/>
-			<div class="service-grid service-grid-wide">
-				{detailedServices.map(({ service, Content }) => (
-					<ServiceCard service={service.data} detailed><Content /></ServiceCard>
+			<div class="services-staggered-row">
+				{services.map((service, index) => (
+					<ServiceCard service={service.data} index={index} />
 				))}
 			</div>
 		</div>
 	</section>
 
-	<section class="section-space section-muted">
-		<div class="container service-approach">
-			<div>
-				<p class="eyebrow">A clear path forward</p>
-				<h2>Make the complex feel manageable.</h2>
-				<p class="lead">
-					Every engagement starts with understanding your operation. Then we bring the right people
-					together, make decisions visible, and keep delivery focused on what matters.
-				</p>
+	<section class="section-space section-offwhite">
+		<div class="container">
+			<div class="services-deep-list">
+				{renderedServices.map(({ service, Content }) => (
+					<article class="service-detail-card" id={service.data.slug} data-reveal>
+						<div class="service-detail-photo notched-photo-wrap">
+							<img
+								src={service.data.coverImage}
+								alt={service.data.coverImageAlt}
+								loading="lazy"
+								width="640"
+								height="440"
+								class="notched-photo-img"
+							/>
+							<a href="/contact/" class="notch-cutout" aria-label={`Get a quote for ${service.data.title}`}>
+								<span class="notch-yellow-btn">
+									<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+										<line x1="7" y1="17" x2="17" y2="7"></line>
+										<polyline points="7 7 17 7 17 17"></polyline>
+									</svg>
+								</span>
+							</a>
+						</div>
+
+						<div class="service-detail-copy">
+							<span class="label-tag">Division {service.data.number}</span>
+							<h2>{service.data.title}</h2>
+							<div class="prose-v2">
+								<Content />
+							</div>
+
+							{service.data.highlights && service.data.highlights.length > 0 && (
+								<ul class="service-highlights-list">
+									{service.data.highlights.map((item) => (
+										<li>
+											<span class="check-circle" aria-hidden="true">✓</span>
+											<span>{item}</span>
+										</li>
+									))}
+								</ul>
+							)}
+
+							<div class="service-detail-actions">
+								<a class="btn-primary" href="/contact/">Get a Quote for {service.data.shortTitle}</a>
+							</div>
+						</div>
+					</article>
+				))}
 			</div>
-			<ol class="approach-steps">
-				<li><span>01</span><div><h3>Understand</h3><p>Align on your goals, context, constraints, and measures of success.</p></div></li>
-				<li><span>02</span><div><h3>Design</h3><p>Develop practical options and a clear, coordinated engineering plan.</p></div></li>
-				<li><span>03</span><div><h3>Deliver</h3><p>Support implementation, commissioning, and knowledge transfer.</p></div></li>
-			</ol>
 		</div>
 	</section>
-
-	<ContactCTA />
 </MainLayout>

@@ -1,0 +1,142 @@
+---
+import { getCollection, render } from 'astro:content';
+import NewsCard from '../../components/NewsCard.astro';
+import { SITE_TITLE } from '../../consts';
+import MainLayout from '../../layouts/MainLayout.astro';
+
+export async function getStaticPaths() {
+	const items = await getCollection('news', ({ data }) => !data.draft);
+	return items.map((item) => ({
+		params: { slug: item.data.slug },
+		props: { item },
+	}));
+}
+
+const { item } = Astro.props;
+const { data } = item;
+const { Content } = await render(item);
+
+const isVideo = data.contentType === 'Video' || Boolean(data.embedUrl);
+const formattedDate = data.publishedDate.toLocaleDateString('en-US', {
+	year: 'numeric',
+	month: 'long',
+	day: 'numeric',
+});
+
+const allNews = await getCollection('news', ({ data }) => !data.draft);
+const relatedNews = allNews
+	.filter((entry) => entry.data.slug !== data.slug)
+	.sort((a, b) => b.data.publishedDate.getTime() - a.data.publishedDate.getTime())
+	.slice(0, 3);
+---
+
+<MainLayout
+	title={`${data.title} | ${SITE_TITLE} News & Media`}
+	description={data.summary}
+	image={data.featuredImage}
+>
+	<article class="detail-page-v2 section-space-top">
+		<div class="container">
+			<div class="article-narrow-col">
+				<div class="detail-top-bar" data-reveal>
+					<a class="back-pill-link" href="/news-media/">← Back to News &amp; Media</a>
+					<div class="detail-meta-pills">
+						<span class="pill-tag pill-tag-dark">{data.contentType}</span>
+						<span class="pill-tag pill-tag-cream">{data.source} · {formattedDate}</span>
+					</div>
+				</div>
+
+				<header class="detail-header-v2" data-reveal>
+					<h1>{data.title}</h1>
+					<p class="detail-lead">{data.summary}</p>
+				</header>
+
+				{isVideo && data.embedUrl ? (
+					<div class="video-embed-frame" data-reveal>
+						<iframe
+							src={data.embedUrl}
+							title={`Watch: ${data.title}`}
+							allow="autoplay; clipboard-write; encrypted-media; picture-in-picture"
+							allowfullscreen
+						></iframe>
+					</div>
+				) : (
+					<div class="detail-hero-photo notched-photo-wrap" data-reveal>
+						<img
+							src={data.featuredImage}
+							alt={data.featuredImageAlt || data.title}
+							width="960"
+							height="540"
+							class="notched-photo-img"
+						/>
+						{data.externalUrl && (
+							<a
+								href={data.externalUrl}
+								target="_blank"
+								rel="noopener noreferrer"
+								class="notch-cutout"
+								aria-label={data.linkLabel || 'Open external link'}
+							>
+								<span class="notch-yellow-btn">
+									<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+										<line x1="7" y1="17" x2="17" y2="7"></line>
+										<polyline points="7 7 17 7 17 17"></polyline>
+									</svg>
+								</span>
+							</a>
+						)}
+					</div>
+				)}
+
+				<div class="prose-v2 article-prose-body" data-reveal>
+					<Content />
+				</div>
+
+				{data.externalUrl && (
+					<div class="external-watch-box" data-reveal>
+						<a
+							href={data.externalUrl}
+							target="_blank"
+							rel="noopener noreferrer"
+							class="btn-secondary"
+						>
+							<span>{data.linkLabel || `Watch on ${data.source}`}</span>
+							<span class="btn-arrow-circle" aria-hidden="true">↗</span>
+						</a>
+					</div>
+				)}
+
+				{data.topics && data.topics.length > 0 && (
+					<footer class="article-topics-footer" data-reveal>
+						<span class="topics-label">Topics:</span>
+						{data.topics.map((topic) => (
+							<span class="news-topic-pill">{topic}</span>
+						))}
+					</footer>
+				)}
+			</div>
+		</div>
+	</article>
+
+	{relatedNews.length > 0 && (
+		<section class="section-space section-offwhite">
+			<div class="container">
+				<div class="section-header-split" data-reveal>
+					<div>
+						<span class="label-tag">More from PATech</span>
+						<h2 class="section-title">Latest articles &amp; videos</h2>
+					</div>
+					<a class="btn-secondary" href="/news-media/">
+						<span>All News &amp; Media</span>
+						<span class="btn-arrow-circle" aria-hidden="true">↗</span>
+					</a>
+				</div>
+				<div class="news-grid-three">
+					{relatedNews.map((rel) => (
+						<NewsCard item={rel} />
+					))}
+				</div>
+			</div>
+		</section>
+	)}
+</MainLayout>
