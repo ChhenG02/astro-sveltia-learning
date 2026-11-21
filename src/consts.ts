@@ -2,7 +2,7 @@ export const SITE_TITLE = 'PATech';
 export const SITE_LEGAL_NAME = 'Pisnuk AutoTech Co., Ltd.';
 export const SITE_TAGLINE = 'Factory Automation, Building BMS & Custom Electrical Panels';
 export const SITE_DESCRIPTION =
-	'PATech (Pisnuk AutoTech Co., Ltd.) is Cambodia’s licensed automation and electrical engineering partner — delivering PLC/SCADA, industrial robotics, SAUTER BMS, and custom 5000A switchboards with 24/7 support.';
+	'PATech (Pisnuk AutoTech Co., Ltd.) is Cambodia’s automation and electrical engineering partner — delivering PLC/SCADA, industrial robotics, SAUTER BMS, and custom 5000A switchboards with 24/7 support.';
 
 export const CONTACT_INFO = {
 	address: "#330, Phlov Béton, Bonla S'et Village, Sangkat Khmuonh, Khan Sen Sok, Phnom Penh, Cambodia",

@@ -20,8 +20,6 @@ import HeaderLink from './HeaderLink.astro';
 			<HeaderLink href="/services/">Services</HeaderLink>
 			<HeaderLink href="/projects/">Projects</HeaderLink>
 			<HeaderLink href="/news-media/">News &amp; Media</HeaderLink>
-			<a href="/#faqs" class="nav-link">FAQ's</a>
-			<HeaderLink href="/contact/">Contact</HeaderLink>
 		</nav>
 
 		<div class="header-actions">
@@ -39,8 +37,6 @@ import HeaderLink from './HeaderLink.astro';
 				<HeaderLink href="/services/">Services</HeaderLink>
 				<HeaderLink href="/projects/">Projects</HeaderLink>
 				<HeaderLink href="/news-media/">News &amp; Media</HeaderLink>
-				<a href="/#faqs">FAQ's</a>
-				<HeaderLink href="/contact/">Contact</HeaderLink>
 				<a class="btn-primary mobile-cta" href="/contact/">Get a Quote</a>
 			</nav>
 		</details>
@@ -49,10 +45,24 @@ import HeaderLink from './HeaderLink.astro';
 
 <script>
 	const header = document.getElementById('site-header');
+	const mobileMenu = header?.querySelector<HTMLDetailsElement>('.mobile-nav');
 	const onScroll = () => {
 		if (!header) return;
 		header.classList.toggle('is-scrolled', window.scrollY > 16);
 	};
 	window.addEventListener('scroll', onScroll, { passive: true });
 	onScroll();
+
+	if (mobileMenu) {
+		document.addEventListener('click', (event) => {
+			if (mobileMenu.open && !mobileMenu.contains(event.target as Node)) {
+				mobileMenu.open = false;
+			}
+		});
+		mobileMenu.querySelectorAll('a').forEach((link) => {
+			link.addEventListener('click', () => {
+				mobileMenu.open = false;
+			});
+		});
+	}
 </script>

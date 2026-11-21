@@ -3,7 +3,7 @@ import type { HTMLAttributes } from 'astro/types';
 
 type Props = HTMLAttributes<'a'> & { href: string };
 
-const { href, ...props } = Astro.props;
+const { href, class: className, ...props } = Astro.props;
 const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
 const normalizedHref = href.replace(/\/$/, '') || '/';
 const isActive =
@@ -12,6 +12,11 @@ const isActive =
 		: pathname === normalizedHref || pathname.startsWith(`${normalizedHref}/`);
 ---
 
-<a href={href} class="nav-link" aria-current={isActive ? 'page' : undefined} {...props}>
+<a
+	href={href}
+	class:list={['nav-link', { active: isActive }, className]}
+	aria-current={isActive ? 'page' : undefined}
+	{...props}
+>
 	<slot />
 </a>

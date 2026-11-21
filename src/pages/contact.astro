@@ -29,7 +29,7 @@ import MainLayout from '../layouts/MainLayout.astro';
 				<h2>Request a custom quote</h2>
 				<p class="form-sub">Site surveys and quotations are free across Phnom Penh and provinces.</p>
 
-				<form class="quote-form-v2" action="#" method="post" onsubmit="event.preventDefault(); this.classList.add('is-sent');">
+				<form class="quote-form-v2" id="quote-request-form" action="#" method="post" novalidate>
 					<div class="form-row-two">
 						<label>
 							<span>Full name *</span>
@@ -67,13 +67,74 @@ import MainLayout from '../layouts/MainLayout.astro';
 						></textarea>
 					</label>
 
-					<button type="submit" class="btn-secondary">
-						<span>Send Request to Engineers</span>
-						<span class="btn-arrow-circle" aria-hidden="true">↗</span>
+					<button
+						type="submit"
+						class="quote-submit-btn"
+						id="quote-submit-btn"
+						data-state="default"
+						aria-live="polite"
+					>
+						<span class="quote-submit-content">
+							<!-- Loading spinner (shown in loading state) -->
+							<svg
+								class="quote-btn-icon quote-spinner-icon"
+								width="18"
+								height="18"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2.25"
+								stroke-linecap="round"
+								aria-hidden="true"
+							>
+								<path d="M21 12a9 9 0 1 1-6.219-8.56" />
+							</svg>
+
+							<!-- Check icon (shown in success state) -->
+							<svg
+								class="quote-btn-icon quote-check-icon"
+								width="18"
+								height="18"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2.4"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<polyline points="20 6 9 17 4 12" />
+							</svg>
+
+							<span class="quote-submit-label" id="quote-submit-label">
+								Send Request to Engineers
+							</span>
+						</span>
+
+						<!-- Integrated northeast arrow on the right (shown in default/error state) -->
+						<svg
+							class="quote-arrow-icon"
+							width="18"
+							height="18"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2.2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							aria-hidden="true"
+						>
+							<line x1="7" y1="17" x2="17" y2="7" />
+							<polyline points="8 7 17 7 17 16" />
+						</svg>
 					</button>
 
-					<p class="form-success-msg" role="status">
-						✓ Thank you! Your request has been noted. For immediate assistance, call <a href={CONTACT_INFO.phoneHref}>{CONTACT_INFO.phone}</a> or message <a href={CONTACT_INFO.telegramHref}>{CONTACT_INFO.telegram}</a>.
+					<p class="form-success-msg" id="quote-success-msg" role="status" aria-live="polite">
+						✓ Thank you! Your request has been sent to our engineering team. For immediate assistance, call <a href={CONTACT_INFO.phoneHref}>{CONTACT_INFO.phone}</a> or message <a href={CONTACT_INFO.telegramHref}>{CONTACT_INFO.telegram}</a>.
+					</p>
+
+					<p class="form-error-msg" id="quote-error-msg" role="alert" hidden>
+						Unable to send your request. Please check the required fields and try again, or call <a href={CONTACT_INFO.phoneHref}>{CONTACT_INFO.phone}</a>.
 					</p>
 				</form>
 			</div>
@@ -116,3 +177,77 @@ import MainLayout from '../layouts/MainLayout.astro';
 		</div>
 	</section>
 </MainLayout>
+
+<script>
+	const form = document.getElementById('quote-request-form') as HTMLFormElement | null;
+	const submitBtn = document.getElementById('quote-submit-btn') as HTMLButtonElement | null;
+	const submitLabel = document.getElementById('quote-submit-label');
+	const errorMsg = document.getElementById('quote-error-msg');
+
+	function setButtonState(state: 'default' | 'loading' | 'success' | 'error') {
+		if (!submitBtn || !submitLabel) return;
+		submitBtn.dataset.state = state;
+
+		if (state === 'loading') {
+			submitBtn.disabled = true;
+			submitBtn.setAttribute('aria-busy', 'true');
+			submitLabel.textContent = 'Sending Request...';
+		} else if (state === 'success') {
+			submitBtn.disabled = true;
+			submitBtn.removeAttribute('aria-busy');
+			submitLabel.textContent = 'Request Sent Successfully';
+		} else if (state === 'error') {
+			submitBtn.disabled = false;
+			submitBtn.removeAttribute('aria-busy');
+			submitLabel.textContent = 'Send Request to Engineers';
+		} else {
+			submitBtn.disabled = false;
+			submitBtn.removeAttribute('aria-busy');
+			submitLabel.textContent = 'Send Request to Engineers';
+		}
+	}
+
+	if (form && submitBtn) {
+		// Reset error/success state if user edits fields after a submission
+		form.addEventListener('input', () => {
+			if (errorMsg && !errorMsg.hidden) {
+				errorMsg.hidden = true;
+			}
+			if (submitBtn.dataset.state === 'error') {
+				setButtonState('default');
+			}
+		});
+
+		form.addEventListener('submit', async (event) => {
+			event.preventDefault();
+			if (submitBtn.dataset.state === 'loading') return;
+
+			if (!form.checkValidity()) {
+				form.reportValidity();
+				setButtonState('error');
+				if (errorMsg) {
+					errorMsg.textContent = 'Please complete all required fields (*) before sending your request.';
+					errorMsg.hidden = false;
+				}
+				return;
+			}
+
+			if (errorMsg) errorMsg.hidden = true;
+			form.classList.remove('is-sent');
+			setButtonState('loading');
+
+			try {
+				await new Promise((resolve) => setTimeout(resolve, 700));
+				form.classList.add('is-sent');
+				setButtonState('success');
+			} catch {
+				setButtonState('error');
+				if (errorMsg) {
+					errorMsg.textContent =
+						'Unable to send your request right now. Please try again or call our 24/7 engineering hotline.';
+					errorMsg.hidden = false;
+				}
+			}
+		});
+	}
+</script>

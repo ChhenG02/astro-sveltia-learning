@@ -7,9 +7,13 @@ interface Props {
 	title: string;
 	description: string;
 	image?: string;
+	ctaEyebrow?: string;
+	ctaHeadline?: string;
+	ctaDescription?: string;
+	hideCta?: boolean;
 }
 
-const { title, description, image } = Astro.props;
+const { title, description, image, ctaEyebrow, ctaHeadline, ctaDescription, hideCta } = Astro.props;
 ---
 
 <!doctype html>
@@ -23,7 +27,12 @@ const { title, description, image } = Astro.props;
 		<main id="main-content">
 			<slot />
 		</main>
-		<Footer />
+		<Footer
+			ctaEyebrow={ctaEyebrow}
+			ctaHeadline={ctaHeadline}
+			ctaDescription={ctaDescription}
+			hideCta={hideCta}
+		/>
 
 		<script>
 			const revealElements = document.querySelectorAll<HTMLElement>('[data-reveal]');

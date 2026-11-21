@@ -26,7 +26,7 @@ const testimonials = (await getCollection('testimonials')).sort(
 ---
 
 <MainLayout
-	title={`${SITE_TITLE} | Licensed Automation, BMS & Electrical Power Engineers`}
+	title={`${SITE_TITLE} | Factory Automation, BMS & Electrical Power Solutions`}
 	description={SITE_DESCRIPTION}
 >
 	<!-- 2. HERO SECTION -->
@@ -54,7 +54,7 @@ const testimonials = (await getCollection('testimonials')).sort(
 		<div class="container">
 			<div class="hero-top-grid" data-reveal>
 				<div class="hero-headline-col">
-					<span class="label-tag">Pisnuk AutoTech Co., Ltd. · Licensed Engineering Partner</span>
+					<span class="label-tag">Pisnuk AutoTech Co., Ltd. · Automation &amp; Electrical Engineering</span>
 					<h1>
 						<span>Reliable automation.</span>
 						<span>Built for real factories.</span>
@@ -92,10 +92,15 @@ const testimonials = (await getCollection('testimonials')).sort(
 						<span class="sticker-tag sticker-mint">24/7 emergency calls</span>
 					</div>
 
-					<!-- Bottom-left 8+ Years experience card -->
+					<!-- Bottom-left experience card; tenure updates from PATech's founding date. -->
 					<div class="hero-glass-card">
 						<div class="glass-stat-row">
-							<strong class="glass-stat-num">8+ Yrs</strong>
+							<strong
+								class="glass-stat-num"
+								id="company-tenure"
+								data-founded-date="2018-08-23"
+								aria-live="polite"
+							></strong>
 							<div class="glass-avatars" aria-label="PATech engineering leadership">
 								{TEAM_AVATARS.map((member) => (
 									<img
@@ -109,7 +114,7 @@ const testimonials = (await getCollection('testimonials')).sort(
 								))}
 							</div>
 						</div>
-						<p class="glass-stat-label">Professional Licensed · 1,000+ Projects Delivered</p>
+						<p class="glass-stat-label">40+ Engineers &amp; Technicians · 1,000+ Projects Delivered</p>
 					</div>
 				</div>
 			</div>
@@ -121,12 +126,12 @@ const testimonials = (await getCollection('testimonials')).sort(
 		<div class="container">
 			<div class="about-top-grid" data-reveal>
 				<div class="about-headline-col">
-					<span class="label-tag">Our Founding Story · Since 2018</span>
-					<h2 class="section-title">Engineers first.<br />Salespeople never.</h2>
+					<span class="label-tag">About us · Since 2018</span>
+					<h2 class="section-title">Professional solutions for safer, smarter operations</h2>
 				</div>
 				<div class="about-story-col">
 					<p>
-						Founded in early 2018 and registered as Pisnuk AutoTech Co., Ltd., PATech started as a hands-on crew programming PLCs and maintaining industrial switchboards. Today, our 40+ engineers and technicians across five departments design, build, and support automation and power systems across Cambodia.
+						PATech started in early 2018 as a technical team modifying machine controllers, programming PLCs, customising factory automation and maintaining electrical panels in factories and commercial buildings. On 23 August 2018 we were officially registered with the Ministry of Commerce as Pisnuk AutoTech Co., Ltd.
 					</p>
 				</div>
 			</div>
@@ -390,8 +395,23 @@ const testimonials = (await getCollection('testimonials')).sort(
 				{FAQS.map((faq, idx) => (
 					<details class="faq-item" open={idx === 0}>
 						<summary>
-							<span>{faq.question}</span>
-							<span class="faq-plus" aria-hidden="true">+</span>
+							<span class="faq-question-text">{faq.question}</span>
+							<span class="faq-plus" aria-hidden="true">
+								<svg
+									class="faq-toggle-svg"
+									width="18"
+									height="18"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2.2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+								>
+									<line class="faq-icon-h" x1="5" y1="12" x2="19" y2="12" />
+									<line class="faq-icon-v" x1="12" y1="5" x2="12" y2="19" />
+								</svg>
+							</span>
 						</summary>
 						<div class="faq-answer">
 							<p>{faq.answer}</p>
@@ -419,5 +439,21 @@ const testimonials = (await getCollection('testimonials')).sort(
 		nextBtn.addEventListener('click', () => {
 			track.scrollBy({ left: scrollStep(), behavior: 'smooth' });
 		});
+	}
+
+	const companyTenure = document.getElementById('company-tenure');
+	if (companyTenure) {
+		const foundedDate = companyTenure.dataset.foundedDate;
+		if (foundedDate) {
+			const [year, month, day] = foundedDate.split('-').map(Number);
+			const today = new Date();
+			let years = today.getFullYear() - year;
+			const anniversaryReached =
+				today.getMonth() + 1 > month ||
+				(today.getMonth() + 1 === month && today.getDate() >= day);
+
+			if (!anniversaryReached) years -= 1;
+			companyTenure.textContent = `${Math.max(0, years)}+ Yrs`;
+		}
 	}
 </script>
