@@ -32,6 +32,16 @@ export const TEAM_AVATARS = [
 	{ name: 'Men Bormey', role: 'Product Plan Manager', src: '/images/team/men-bormey.png' },
 ];
 
+export const CULTURE_PHOTOS = [
+	{ src: '/images/about/event-01.png', alt: 'PATech company event and team gathering' },
+	{ src: '/images/about/event-02.jpg', alt: 'PATech team celebration and activities' },
+	{ src: '/images/about/event-03.jpg', alt: 'PATech team event and collaboration' },
+	{ src: '/images/about/event-04.jpg', alt: 'Company team milestone and event' },
+	{ src: '/images/about/event-05.jpg', alt: 'PATech community and company event' },
+	{ src: '/images/about/event-06.jpg', alt: 'Team event and outing' },
+	{ src: '/images/about/event-07.jpg', alt: 'PATech team gathering and celebration' },
+];
+
 export const WHY_CHOOSE_US = [
 	{
 		icon: 'shield',

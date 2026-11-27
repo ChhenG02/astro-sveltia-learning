@@ -5,7 +5,6 @@ summary: ⚡️ ចង់បានម៉ាស៊ីនកាត់ដែកទ�
 contentType: Video
 source: YouTube
 publishedDate: 2025-10-15
-featuredImage: /images/services/fa-laser-tube.png
 featuredImageAlt: PATech automated metal tube cutting machine
 externalUrl: https://www.youtube.com/watch?v=M8qwY_UJY1s
 embedUrl: https://www.youtube-nocookie.com/embed/M8qwY_UJY1s

@@ -5,7 +5,6 @@ summary: ស្វែងយល់បន្ថែមអំពី Digital Panel Me
 contentType: Video
 source: YouTube
 publishedDate: 2025-10-25
-featuredImage: /images/services/eps-msb-mdb.jpg
 featuredImageAlt: "Episode 5: Digital Panel Meters (DPM) video thumbnail"
 externalUrl: https://youtu.be/6cOybT3lq3g?si=jiGc8CwQvdwDJolB
 embedUrl: https://www.youtube-nocookie.com/embed/6cOybT3lq3g

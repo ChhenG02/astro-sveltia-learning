@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { resolveNewsThumbnail } from '../utils/news';
 
 interface Props {
 	item: CollectionEntry<'news'>;
@@ -7,6 +8,7 @@ interface Props {
 
 const { item } = Astro.props;
 const { data } = item;
+const thumbnailSrc = resolveNewsThumbnail(data);
 const isVideo = data.contentType === 'Video';
 const formattedDate = data.publishedDate.toLocaleDateString('en-US', {
 	year: 'numeric',
@@ -27,7 +29,7 @@ const formattedDate = data.publishedDate.toLocaleDateString('en-US', {
 	<a href={`/news-media/${data.slug}/`} class="news-card-link">
 		<div class="notched-photo-wrap news-photo-wrap">
 			<img
-				src={data.featuredImage}
+				src={thumbnailSrc}
 				alt={data.featuredImageAlt || data.title}
 				loading="lazy"
 				width="640"

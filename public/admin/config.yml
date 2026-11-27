@@ -103,9 +103,9 @@ collections:
           - Facebook
         default: PATech
       - { name: publishedDate, label: Publish Date, widget: datetime, type: date }
-      - { name: featuredImage, label: Featured / Thumbnail Image, widget: image }
-      - { name: featuredImageAlt, label: Image Alt Text, widget: string }
-      - { name: externalUrl, label: External Video / Post URL, widget: string, required: false, hint: "Optional link to YouTube or Facebook video." }
+      - { name: featuredImage, label: Featured / Thumbnail Image, widget: image, required: false, hint: "Required for PATech and Facebook. Optional for YouTube — leave blank to extract the YouTube video thumbnail automatically." }
+      - { name: featuredImageAlt, label: Image Alt Text, widget: string, required: false, hint: "Optional for YouTube; falls back to the item title if left blank." }
+      - { name: externalUrl, label: External Video / Post URL, widget: string, required: false, hint: "Optional link to YouTube or Facebook video. For YouTube, the thumbnail is automatically extracted from this URL when Featured / Thumbnail Image is left blank." }
       - { name: embedUrl, label: Video Embed URL, widget: string, required: false, hint: "Optional iframe embed URL (e.g. https://www.youtube-nocookie.com/embed/...)." }
       - { name: linkLabel, label: External Link Label, widget: string, required: false, hint: "e.g. Watch on YouTube or Watch on Facebook" }
       - name: topics

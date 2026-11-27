@@ -1,5 +1,5 @@
 ---
-import { SITE_TITLE, TEAM_AVATARS, WHY_CHOOSE_US } from '../consts';
+import { CULTURE_PHOTOS, SITE_TITLE } from '../consts';
 import MainLayout from '../layouts/MainLayout.astro';
 ---
 
@@ -34,14 +34,6 @@ import MainLayout from '../layouts/MainLayout.astro';
 						height="440"
 						class="notched-photo-img"
 					/>
-					<a href="/contact/" class="notch-cutout" aria-label="Work with our team">
-						<span class="notch-yellow-btn">
-							<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
-								<line x1="7" y1="17" x2="17" y2="7"></line>
-								<polyline points="7 7 17 7 17 17"></polyline>
-							</svg>
-						</span>
-					</a>
 				</div>
 
 				<div class="about-stats-pair" data-reveal>
@@ -123,20 +115,172 @@ import MainLayout from '../layouts/MainLayout.astro';
 		<div class="container">
 			<div class="section-header-split" data-reveal>
 				<div>
-					<span class="label-tag">Engineering Leadership</span>
-					<h2 class="section-title">Meet the engineers leading every job</h2>
+					<span class="label-tag">Our Leadership</span>
+					<h2 class="section-title">Founder &amp; CEO</h2>
+					<p class="leadership-subtitle">Meet the leadership behind PATech.</p>
 				</div>
 			</div>
 
-			<div class="leadership-grid">
-				{TEAM_AVATARS.map((member) => (
-					<article class="leader-card" data-reveal>
-						<img src={member.src} alt={member.name} width="240" height="240" loading="lazy" />
-						<h3>{member.name}</h3>
-						<span>{member.role}</span>
-					</article>
-				))}
+			<div class="ceo-spotlight-card" data-reveal>
+				<div class="ceo-photo-frame">
+					<img
+						src="/images/team/ceo.jpg"
+						alt="Portrait of Sokun Nhoem"
+						width="360"
+						height="450"
+						loading="lazy"
+					/>
+				</div>
+				<div class="ceo-copy-col">
+					<span class="ceo-kicker">Leadership</span>
+					<blockquote class="ceo-quote">
+						“Since 2018 our goal has been simple: understand our customers' problems and solve them with safe, reliable automation. Thank you for trusting PATech.”
+					</blockquote>
+					<div class="ceo-meta">
+						<strong>Sokun Nhoem</strong>
+						<span>Founder &amp; Chief Executive Officer</span>
+					</div>
+				</div>
 			</div>
 		</div>
 	</section>
+
+	<section class="section-space section-offwhite" aria-label="People, culture & community">
+		<div class="container">
+			<div class="section-header-split" data-reveal>
+				<div>
+					<span class="label-tag">Inside PATech</span>
+					<h2 class="section-title">People, culture &amp; community</h2>
+					<p class="leadership-subtitle">
+						Team trips, celebrations and giving back — the moments that make PATech a team.
+					</p>
+				</div>
+			</div>
+
+			<ul class="culture-gallery-grid" data-reveal>
+				{CULTURE_PHOTOS.map((photo, index) => (
+					<li
+						class={`culture-tile ${index === 0 ? 'is-featured' : ''} ${
+							index >= CULTURE_PHOTOS.length - 2 ? 'is-wide' : ''
+						}`.trim()}
+					>
+						<button
+							type="button"
+							class="culture-tile-btn"
+							data-culture-index={index}
+							data-culture-src={photo.src}
+							data-culture-alt={photo.alt}
+							aria-label={`View larger: ${photo.alt}`}
+						>
+							<img src={photo.src} alt={photo.alt} loading="lazy" />
+							<span class="culture-tile-overlay" aria-hidden="true"></span>
+							<span class="culture-expand-badge" aria-hidden="true">
+								<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+									<polyline points="15 3 21 3 21 9"></polyline>
+									<polyline points="9 21 3 21 3 15"></polyline>
+									<line x1="21" y1="3" x2="14" y2="10"></line>
+									<line x1="3" y1="21" x2="10" y2="14"></line>
+								</svg>
+							</span>
+						</button>
+					</li>
+				))}
+			</ul>
+		</div>
+	</section>
+
+	<div
+		class="culture-lightbox"
+		id="culture-lightbox"
+		role="dialog"
+		aria-modal="true"
+		aria-label="Photo viewer"
+		hidden
+	>
+		<button type="button" class="culture-lb-btn culture-lb-close" id="culture-lb-close" aria-label="Close">
+			<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+				<line x1="18" y1="6" x2="6" y2="18"></line>
+				<line x1="6" y1="6" x2="18" y2="18"></line>
+			</svg>
+		</button>
+		<button type="button" class="culture-lb-btn culture-lb-prev" id="culture-lb-prev" aria-label="Previous">
+			<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+				<polyline points="15 18 9 12 15 6"></polyline>
+			</svg>
+		</button>
+		<figure class="culture-lb-figure">
+			<img id="culture-lb-img" src="" alt="" />
+			<figcaption id="culture-lb-caption" class="culture-lb-caption"></figcaption>
+		</figure>
+		<button type="button" class="culture-lb-btn culture-lb-next" id="culture-lb-next" aria-label="Next">
+			<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+				<polyline points="9 18 15 12 9 6"></polyline>
+			</svg>
+		</button>
+	</div>
 </MainLayout>
+
+<script>
+	const tileButtons = Array.from(
+		document.querySelectorAll<HTMLButtonElement>('[data-culture-index]'),
+	);
+	const lightbox = document.getElementById('culture-lightbox');
+	const lbImg = document.getElementById('culture-lb-img') as HTMLImageElement | null;
+	const lbCaption = document.getElementById('culture-lb-caption');
+	const closeBtn = document.getElementById('culture-lb-close');
+	const prevBtn = document.getElementById('culture-lb-prev');
+	const nextBtn = document.getElementById('culture-lb-next');
+
+	if (tileButtons.length > 0 && lightbox && lbImg && lbCaption && closeBtn && prevBtn && nextBtn) {
+		const photos = tileButtons.map((btn) => ({
+			src: btn.dataset.cultureSrc || '',
+			alt: btn.dataset.cultureAlt || '',
+		}));
+		let currentIndex = 0;
+
+		const renderPhoto = (index: number) => {
+			currentIndex = (index + photos.length) % photos.length;
+			const item = photos[currentIndex];
+			lbImg.src = item.src;
+			lbImg.alt = item.alt;
+			lbCaption.textContent = `${item.alt} · ${currentIndex + 1} / ${photos.length}`;
+		};
+
+		const openLightbox = (index: number) => {
+			renderPhoto(index);
+			lightbox.hidden = false;
+			document.body.style.overflow = 'hidden';
+			closeBtn.focus();
+		};
+
+		const closeLightbox = () => {
+			lightbox.hidden = true;
+			document.body.style.overflow = '';
+		};
+
+		tileButtons.forEach((btn, idx) => {
+			btn.addEventListener('click', () => openLightbox(idx));
+		});
+
+		closeBtn.addEventListener('click', closeLightbox);
+		prevBtn.addEventListener('click', () => renderPhoto(currentIndex - 1));
+		nextBtn.addEventListener('click', () => renderPhoto(currentIndex + 1));
+
+		lightbox.addEventListener('click', (event) => {
+			if (event.target === lightbox) {
+				closeLightbox();
+			}
+		});
+
+		document.addEventListener('keydown', (event) => {
+			if (lightbox.hidden) return;
+			if (event.key === 'Escape') {
+				closeLightbox();
+			} else if (event.key === 'ArrowLeft') {
+				renderPhoto(currentIndex - 1);
+			} else if (event.key === 'ArrowRight') {
+				renderPhoto(currentIndex + 1);
+			}
+		});
+	}
+</script>

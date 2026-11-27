@@ -1,6 +1,7 @@
 import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
+import { getYouTubeThumbnailUrl } from './utils/news';
 
 const projects = defineCollection({
 	loader: glob({ base: './src/content/projects', pattern: '**/*.md' }),
@@ -35,22 +36,44 @@ const projects = defineCollection({
 
 const news = defineCollection({
 	loader: glob({ base: './src/content/news', pattern: '**/*.md' }),
-	schema: z.object({
-		title: z.string().min(1),
-		slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
-		summary: z.string().min(1),
-		contentType: z.enum(['Article', 'Video']).default('Article'),
-		source: z.string().default('PATech'),
-		publishedDate: z.coerce.date(),
-		featuredImage: z.string().min(1),
-		featuredImageAlt: z.string().default('PATech News & Media'),
-		externalUrl: z.string().optional(),
-		embedUrl: z.string().optional(),
-		linkLabel: z.string().optional(),
-		topics: z.array(z.string()).default([]),
-		featured: z.boolean().default(true),
-		draft: z.boolean().default(false),
-	}),
+	schema: z
+		.object({
+			title: z.string().min(1),
+			slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
+			summary: z.string().min(1),
+			contentType: z.enum(['Article', 'Video']).default('Article'),
+			source: z.string().default('PATech'),
+			publishedDate: z.coerce.date(),
+			featuredImage: z.string().optional(),
+			featuredImageAlt: z.string().optional().default('PATech News & Media'),
+			externalUrl: z.string().optional(),
+			embedUrl: z.string().optional(),
+			linkLabel: z.string().optional(),
+			topics: z.array(z.string()).default([]),
+			featured: z.boolean().default(true),
+			draft: z.boolean().default(false),
+		})
+		.superRefine((data, ctx) => {
+			if (data.featuredImage?.trim()) {
+				return;
+			}
+			if (data.source === 'YouTube') {
+				if (!getYouTubeThumbnailUrl(data.externalUrl, data.embedUrl)) {
+					ctx.addIssue({
+						code: 'custom',
+						path: ['externalUrl'],
+						message:
+							'YouTube items without a featuredImage must include a valid YouTube externalUrl or embedUrl.',
+					});
+				}
+				return;
+			}
+			ctx.addIssue({
+				code: 'custom',
+				path: ['featuredImage'],
+				message: 'featuredImage is required unless source is YouTube.',
+			});
+		}),
 });
 
 const services = defineCollection({

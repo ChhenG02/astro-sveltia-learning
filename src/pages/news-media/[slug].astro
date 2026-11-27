@@ -3,6 +3,7 @@ import { getCollection, render } from 'astro:content';
 import NewsCard from '../../components/NewsCard.astro';
 import { SITE_TITLE } from '../../consts';
 import MainLayout from '../../layouts/MainLayout.astro';
+import { resolveNewsThumbnail } from '../../utils/news';
 
 export async function getStaticPaths() {
 	const items = await getCollection('news', ({ data }) => !data.draft);
@@ -15,6 +16,7 @@ export async function getStaticPaths() {
 const { item } = Astro.props;
 const { data } = item;
 const { Content } = await render(item);
+const thumbnailSrc = resolveNewsThumbnail(data);
 
 const isVideo = data.contentType === 'Video' || Boolean(data.embedUrl);
 const formattedDate = data.publishedDate.toLocaleDateString('en-US', {
@@ -33,7 +35,7 @@ const relatedNews = allNews
 <MainLayout
 	title={`${data.title} | ${SITE_TITLE} News & Media`}
 	description={data.summary}
-	image={data.featuredImage}
+	image={thumbnailSrc}
 >
 	<article class="detail-page-v2 section-space-top">
 		<div class="container">
@@ -63,7 +65,7 @@ const relatedNews = allNews
 				) : (
 					<div class="detail-hero-photo notched-photo-wrap" data-reveal>
 						<img
-							src={data.featuredImage}
+							src={thumbnailSrc}
 							alt={data.featuredImageAlt || data.title}
 							width="960"
 							height="540"
