@@ -18,7 +18,7 @@ const projects = defineCollection({
 		solution: z.string().optional(),
 		results: z.array(z.string()).default([]),
 		services: z.array(z.string()).default([]),
-		sortOrder: z.number().int().positive().default(1),
+		createdAt: z.coerce.date().optional(),
 		featured: z.boolean().default(true),
 		draft: z.boolean().default(false),
 		coverImage: z.string().min(1),
@@ -134,7 +134,7 @@ const testimonials = defineCollection({
 		rating: z.number().int().min(1).max(5).default(5),
 		avatar: z.string().min(1),
 		highlight: z.boolean().default(false),
-		sortOrder: z.number().int().positive().default(1),
+		createdAt: z.coerce.date().optional(),
 	}),
 });
 

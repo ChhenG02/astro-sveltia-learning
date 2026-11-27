@@ -58,7 +58,7 @@ collections:
           - factory-automation
           - building-automation
           - electrical-power-solutions
-      - { name: sortOrder, label: Display Order, widget: number, value_type: int, min: 1, step: 1, default: 1 }
+      - { name: createdAt, label: Created Date & Time, widget: datetime, required: false, hint: "Used to sort projects newest first." }
       - { name: featured, label: Feature on Home Page, widget: boolean, default: true }
       - { name: draft, label: Keep as Draft, widget: boolean, default: false }
       - { name: coverImage, label: Cover Image, widget: image, hint: "Upload a new photo or reference /images/projects/..." }
@@ -189,4 +189,4 @@ collections:
       - { name: rating, label: Star Rating (1-5), widget: number, value_type: int, min: 1, max: 5, default: 5 }
       - { name: avatar, label: Avatar Image, widget: image }
       - { name: highlight, label: Highlight Chip in Yellow, widget: boolean, default: false }
-      - { name: sortOrder, label: Display Order, widget: number, value_type: int, min: 1, step: 1, default: 1 }
+      - { name: createdAt, label: Created Date & Time, widget: datetime, required: false, hint: "Used to sort projects newest first." }

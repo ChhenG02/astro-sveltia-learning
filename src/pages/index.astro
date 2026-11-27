@@ -13,7 +13,7 @@ const featuredServices = (
 const featuredProjects = (
 	await getCollection('projects', ({ data }) => !data.draft && data.featured)
 )
-	.sort((a, b) => a.data.sortOrder - b.data.sortOrder)
+	.sort((a, b) => (b.data.createdAt?.getTime() ?? 0) - (a.data.createdAt?.getTime() ?? 0))
 	.slice(0, 4);
 
 const latestNews = (await getCollection('news', ({ data }) => !data.draft))
@@ -21,7 +21,7 @@ const latestNews = (await getCollection('news', ({ data }) => !data.draft))
 	.slice(0, 3);
 
 const testimonials = (await getCollection('testimonials')).sort(
-	(a, b) => a.data.sortOrder - b.data.sortOrder,
+	(a, b) => (b.data.createdAt?.getTime() ?? 0) - (a.data.createdAt?.getTime() ?? 0),
 );
 ---
 

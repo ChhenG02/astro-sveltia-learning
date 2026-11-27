@@ -24,7 +24,7 @@ const otherServices = allServices.filter((s) => s.data.slug !== data.slug);
 const allProjects = await getCollection('projects', ({ data }) => !data.draft);
 const relatedProjects = allProjects
 	.filter((project) => project.data.services?.includes(data.slug))
-	.sort((a, b) => a.data.sortOrder - b.data.sortOrder);
+	.sort((a, b) => (b.data.createdAt?.getTime() ?? 0) - (a.data.createdAt?.getTime() ?? 0));
 
 // Group solutions by category for clear visual flow
 const solutionCategories = new Map<string, typeof data.solutions>();
