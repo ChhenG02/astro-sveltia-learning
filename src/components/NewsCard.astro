@@ -8,6 +8,7 @@ interface Props {
 
 const { item } = Astro.props;
 const { data } = item;
+const newsSlug = data.slug || item.id;
 const thumbnailSrc = resolveNewsThumbnail(data);
 const isVideo = data.contentType === 'Video';
 const formattedDate = data.publishedDate.toLocaleDateString('en-US', {
@@ -26,7 +27,7 @@ const formattedDate = data.publishedDate.toLocaleDateString('en-US', {
 	data-date={data.publishedDate.getTime()}
 	data-reveal
 >
-	<a href={`/news-media/${data.slug}/`} class="news-card-link">
+	<a href={`/news-media/${newsSlug}/`} class="news-card-link">
 		<div class="notched-photo-wrap news-photo-wrap">
 			<img
 				src={thumbnailSrc}

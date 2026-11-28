@@ -314,14 +314,16 @@ const testimonials = (await getCollection('testimonials')).sort(
 					<span class="label-tag">Client Feedback</span>
 					<h2 class="section-title">Trusted by plant managers in their toughest moments.</h2>
 				</div>
-				<div class="carousel-nav-btns" aria-label="Testimonials carousel controls">
-					<button type="button" class="circle-arrow-btn is-outlined" id="testi-prev" aria-label="Previous testimonial">
-						←
-					</button>
-					<button type="button" class="circle-arrow-btn is-dark" id="testi-next" aria-label="Next testimonial">
-						→
-					</button>
-				</div>
+				{testimonials.length > 3 && (
+					<div class="carousel-nav-btns" aria-label="Testimonials carousel controls">
+						<button type="button" class="circle-arrow-btn is-outlined" id="testi-prev" aria-label="Previous testimonial">
+							←
+						</button>
+						<button type="button" class="circle-arrow-btn is-dark" id="testi-next" aria-label="Next testimonial">
+							→
+						</button>
+					</div>
+				)}
 			</div>
 
 			<div class="testimonials-track" id="testimonials-track">
@@ -348,7 +350,7 @@ const testimonials = (await getCollection('testimonials')).sort(
 							/>
 							<div class="chip-meta">
 								<strong>{item.data.name}</strong>
-								<span>{item.data.role} · {item.data.projectType}</span>
+								<span>{item.data.role}</span>
 							</div>
 						</div>
 					</article>

@@ -20,7 +20,6 @@ collections:
     label_singular: Project
     description: PATech factory automation, robotics, building automation (BMS), and electrical power projects.
     folder: /src/content/projects
-    identifier_field: slug
     summary: "{{title}} ({{year}} · {{category}})"
     create: true
     delete: true
@@ -28,7 +27,6 @@ collections:
     public_folder: /uploads/projects
     fields:
       - { name: title, label: Project Title, widget: string, hint: "Full display title for the project." }
-      - { name: slug, label: URL Slug, widget: string, hint: "Lowercase words separated by hyphens (e.g. steel-structure-welding-robot)." }
       - { name: client, label: Client / Facility Type, widget: string, required: false }
       - name: category
         label: Category
@@ -77,7 +75,6 @@ collections:
     label_singular: News / Media Item
     description: Articles, technical updates, YouTube episodes, and Facebook video reels for PATech News & Media.
     folder: /src/content/news
-    identifier_field: slug
     summary: "[{{contentType}}] {{title}} ({{publishedDate}})"
     create: true
     delete: true
@@ -85,7 +82,6 @@ collections:
     public_folder: /uploads/news
     fields:
       - { name: title, label: Title, widget: string }
-      - { name: slug, label: URL Slug, widget: string, hint: "Lowercase hyphenated slug for /news-media/<slug>." }
       - { name: summary, label: Summary / Excerpt, widget: text, hint: "Concise 2-line summary shown in the News & Media cards." }
       - name: contentType
         label: Content Type
@@ -107,7 +103,6 @@ collections:
       - { name: featuredImageAlt, label: Image Alt Text, widget: string, required: false, hint: "Optional for YouTube; falls back to the item title if left blank." }
       - { name: externalUrl, label: External Video / Post URL, widget: string, required: false, hint: "Optional link to YouTube or Facebook video. For YouTube, the thumbnail is automatically extracted from this URL when Featured / Thumbnail Image is left blank." }
       - { name: embedUrl, label: Video Embed URL, widget: string, required: false, hint: "Optional iframe embed URL (e.g. https://www.youtube-nocookie.com/embed/...)." }
-      - { name: linkLabel, label: External Link Label, widget: string, required: false, hint: "e.g. Watch on YouTube or Watch on Facebook" }
       - name: topics
         label: Topics / Tags
         widget: list
@@ -117,74 +112,17 @@ collections:
       - { name: draft, label: Keep as Draft, widget: boolean, default: false }
       - { name: body, label: Article / Video Content (Khmer & English supported), widget: markdown }
 
-  - name: services
-    label: Services
-    label_singular: Service
-    description: PATech's core engineering service categories displayed on the landing page and services page.
-    folder: /src/content/services
-    identifier_field: slug
-    summary: "{{number}} · {{title}}"
-    create: true
-    delete: true
-    media_folder: /public/uploads/services
-    public_folder: /uploads/services
-    fields:
-      - { name: number, label: Display Number, widget: string, hint: "Two digits, e.g. 01, 02, 03" }
-      - { name: title, label: Full Service Name, widget: string }
-      - { name: shortTitle, label: Card Title, widget: string }
-      - { name: slug, label: URL Slug, widget: string }
-      - { name: summary, label: Short Card Summary (2 lines), widget: text }
-      - { name: coverImage, label: Card Photo, widget: image }
-      - { name: coverImageAlt, label: Card Photo Alt, widget: string }
-      - name: highlights
-        label: Key Solutions Included
-        widget: list
-        required: false
-      - name: benefits
-        label: Why It Matters (Benefits)
-        widget: list
-        required: false
-        fields:
-          - { name: title, label: Title, widget: string }
-          - { name: description, label: Description, widget: text }
-      - name: workflow
-        label: Engineering Delivery Flow (Steps)
-        widget: list
-        required: false
-        fields:
-          - { name: step, label: Step Number, widget: string }
-          - { name: title, label: Step Title, widget: string }
-          - { name: description, label: Step Description, widget: text }
-      - name: solutions
-        label: Detailed Solutions Catalog
-        widget: list
-        required: false
-        fields:
-          - { name: title, label: Solution Title, widget: string }
-          - { name: category, label: Group / Category, widget: string, required: false }
-          - { name: summary, label: Short Summary, widget: text }
-          - { name: problem, label: Problem Solved, widget: text, required: false }
-          - { name: applications, label: Typical Applications, widget: text, required: false }
-          - { name: benefits, label: Key Benefits, widget: text, required: false }
-          - { name: image, label: Solution Image, widget: image, required: false }
-      - { name: featured, label: Show in Landing Page Trio, widget: boolean, default: true }
-      - { name: draft, label: Keep as Draft, widget: boolean, default: false }
-      - { name: body, label: Full Description & Solutions, widget: markdown }
-
   - name: testimonials
     label: Testimonials
     label_singular: Testimonial
     description: Client reviews shown in the Testimonials carousel.
     folder: /src/content/testimonials
-    identifier_field: slug
-    summary: "{{name}} · {{projectType}}"
+    summary: "{{name}} · {{role}}"
     create: true
     delete: true
     fields:
       - { name: name, label: Client Name / Title, widget: string }
-      - { name: slug, label: Identifier Slug, widget: string }
       - { name: role, label: Role, widget: string }
-      - { name: projectType, label: Project Type / Facility, widget: string }
       - { name: quote, label: Review Quote, widget: text }
       - { name: rating, label: Star Rating (1-5), widget: number, value_type: int, min: 1, max: 5, default: 5 }
       - { name: avatar, label: Avatar Image, widget: image }

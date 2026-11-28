@@ -7,7 +7,7 @@ const projects = defineCollection({
 	loader: glob({ base: './src/content/projects', pattern: '**/*.md' }),
 	schema: z.object({
 		title: z.string().min(1),
-		slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
+		slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/).optional(),
 		client: z.string().optional(),
 		category: z.string().min(1),
 		location: z.string().min(1),
@@ -39,7 +39,7 @@ const news = defineCollection({
 	schema: z
 		.object({
 			title: z.string().min(1),
-			slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
+			slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/).optional(),
 			summary: z.string().min(1),
 			contentType: z.enum(['Article', 'Video']).default('Article'),
 			source: z.string().default('PATech'),
@@ -82,7 +82,7 @@ const services = defineCollection({
 		number: z.string().regex(/^\d{2}$/),
 		title: z.string().min(1),
 		shortTitle: z.string().min(1),
-		slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
+		slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/).optional(),
 		summary: z.string().min(1),
 		coverImage: z.string().min(1),
 		coverImageAlt: z.string().min(1),
@@ -127,9 +127,9 @@ const testimonials = defineCollection({
 	loader: glob({ base: './src/content/testimonials', pattern: '**/*.md' }),
 	schema: z.object({
 		name: z.string().min(1),
-		slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
+		slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/).optional(),
 		role: z.string().min(1),
-		projectType: z.string().min(1),
+		projectType: z.string().optional(),
 		quote: z.string().min(1),
 		rating: z.number().int().min(1).max(5).default(5),
 		avatar: z.string().min(1),

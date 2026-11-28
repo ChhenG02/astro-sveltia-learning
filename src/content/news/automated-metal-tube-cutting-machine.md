@@ -8,7 +8,7 @@ publishedDate: 2025-10-15
 featuredImageAlt: PATech automated metal tube cutting machine
 externalUrl: https://www.youtube.com/watch?v=M8qwY_UJY1s
 embedUrl: https://www.youtube-nocookie.com/embed/M8qwY_UJY1s
-linkLabel: Watch on YouTube
+linkLabel: Watch on X
 topics:
   - Factory Automation
   - Tube Cutting

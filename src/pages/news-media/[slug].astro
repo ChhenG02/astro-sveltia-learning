@@ -8,13 +8,14 @@ import { resolveNewsThumbnail } from '../../utils/news';
 export async function getStaticPaths() {
 	const items = await getCollection('news', ({ data }) => !data.draft);
 	return items.map((item) => ({
-		params: { slug: item.data.slug },
+		params: { slug: item.data.slug || item.id },
 		props: { item },
 	}));
 }
 
 const { item } = Astro.props;
 const { data } = item;
+const currentSlug = data.slug || item.id;
 const { Content } = await render(item);
 const thumbnailSrc = resolveNewsThumbnail(data);
 
@@ -27,7 +28,7 @@ const formattedDate = data.publishedDate.toLocaleDateString('en-US', {
 
 const allNews = await getCollection('news', ({ data }) => !data.draft);
 const relatedNews = allNews
-	.filter((entry) => entry.data.slug !== data.slug)
+	.filter((entry) => (entry.data.slug || entry.id) !== currentSlug)
 	.sort((a, b) => b.data.publishedDate.getTime() - a.data.publishedDate.getTime())
 	.slice(0, 3);
 ---
@@ -77,7 +78,17 @@ const relatedNews = allNews
 								target="_blank"
 								rel="noopener noreferrer"
 								class="notch-cutout"
-								aria-label={data.linkLabel || 'Open external link'}
+								aria-label={
+									data.externalUrl.includes('youtube.com') ||
+									data.externalUrl.includes('youtu.be') ||
+									data.source === 'YouTube'
+										? 'Watch on YouTube'
+										: data.externalUrl.includes('facebook.com') ||
+											  data.externalUrl.includes('fb.watch') ||
+											  data.source === 'Facebook'
+											? 'Watch on Facebook'
+											: 'Open external link'
+								}
 							>
 								<span class="notch-yellow-btn">
 									<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
@@ -102,7 +113,21 @@ const relatedNews = allNews
 							rel="noopener noreferrer"
 							class="btn-secondary"
 						>
-							<span>{data.linkLabel || `Watch on ${data.source}`}</span>
+							<span>
+								{data.externalUrl.includes('youtube.com') ||
+								data.externalUrl.includes('youtu.be') ||
+								data.source === 'YouTube'
+									? 'Watch on YouTube'
+									: data.externalUrl.includes('facebook.com') ||
+										  data.externalUrl.includes('fb.watch') ||
+										  data.source === 'Facebook'
+										? 'Watch on Facebook'
+										: data.externalUrl.includes('x.com') || data.externalUrl.includes('twitter.com')
+											? 'Watch on X'
+											: data.source && data.source !== 'PATech'
+												? `Watch on ${data.source}`
+												: 'Watch Video'}
+							</span>
 							<span class="btn-arrow-circle" aria-hidden="true">↗</span>
 						</a>
 					</div>
@@ -141,4 +166,119 @@ const relatedNews = allNews
 			</div>
 		</section>
 	)}
+
+	<div
+		class="culture-lightbox"
+		id="article-lightbox"
+		role="dialog"
+		aria-modal="true"
+		aria-label="Image viewer"
+		hidden
+	>
+		<button type="button" class="culture-lb-btn culture-lb-close" id="article-lb-close" aria-label="Close">
+			<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+				<line x1="18" y1="6" x2="6" y2="18"></line>
+				<line x1="6" y1="6" x2="18" y2="18"></line>
+			</svg>
+		</button>
+		<button type="button" class="culture-lb-btn culture-lb-prev" id="article-lb-prev" aria-label="Previous">
+			<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+				<polyline points="15 18 9 12 15 6"></polyline>
+			</svg>
+		</button>
+		<figure class="culture-lb-figure">
+			<img id="article-lb-img" src="" alt="" />
+			<figcaption id="article-lb-caption" class="culture-lb-caption"></figcaption>
+		</figure>
+		<button type="button" class="culture-lb-btn culture-lb-next" id="article-lb-next" aria-label="Next">
+			<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+				<polyline points="9 18 15 12 9 6"></polyline>
+			</svg>
+		</button>
+	</div>
 </MainLayout>
+
+<script>
+	const articleImages = Array.from(
+		document.querySelectorAll<HTMLImageElement>('.detail-hero-photo img, .article-prose-body img'),
+	);
+	const lightbox = document.getElementById('article-lightbox');
+	const lbImg = document.getElementById('article-lb-img') as HTMLImageElement | null;
+	const lbCaption = document.getElementById('article-lb-caption');
+	const closeBtn = document.getElementById('article-lb-close');
+	const prevBtn = document.getElementById('article-lb-prev');
+	const nextBtn = document.getElementById('article-lb-next');
+
+	if (articleImages.length > 0 && lightbox && lbImg && lbCaption && closeBtn && prevBtn && nextBtn) {
+		const photos = articleImages.map((img) => ({
+			src: img.currentSrc || img.src,
+			alt: img.alt || '',
+		}));
+		let currentIndex = 0;
+
+		if (photos.length <= 1) {
+			prevBtn.hidden = true;
+			nextBtn.hidden = true;
+			prevBtn.style.display = 'none';
+			nextBtn.style.display = 'none';
+		}
+
+		const renderPhoto = (index: number) => {
+			currentIndex = (index + photos.length) % photos.length;
+			const photo = photos[currentIndex];
+			lbImg.src = photo.src;
+			lbImg.alt = photo.alt;
+			lbCaption.textContent =
+				photos.length > 1
+					? `${photo.alt} · ${currentIndex + 1} / ${photos.length}`
+					: photo.alt;
+		};
+
+		const openLightbox = (index: number) => {
+			renderPhoto(index);
+			lightbox.hidden = false;
+			document.body.style.overflow = 'hidden';
+			closeBtn.focus();
+		};
+
+		const closeLightbox = () => {
+			lightbox.hidden = true;
+			document.body.style.overflow = '';
+		};
+
+		articleImages.forEach((img, idx) => {
+			img.style.cursor = 'zoom-in';
+			img.tabIndex = 0;
+			img.setAttribute('role', 'button');
+			img.setAttribute('aria-label', img.alt ? `View image: ${img.alt}` : 'View image');
+			img.addEventListener('click', () => openLightbox(idx));
+			img.addEventListener('keydown', (event) => {
+				if (event.key === 'Enter' || event.key === ' ') {
+					event.preventDefault();
+					openLightbox(idx);
+				}
+			});
+		});
+
+		closeBtn.addEventListener('click', closeLightbox);
+		prevBtn.addEventListener('click', () => renderPhoto(currentIndex - 1));
+		nextBtn.addEventListener('click', () => renderPhoto(currentIndex + 1));
+
+		lightbox.addEventListener('click', (event) => {
+			if (event.target === lightbox) {
+				closeLightbox();
+			}
+		});
+
+		document.addEventListener('keydown', (event) => {
+			if (lightbox.hidden) return;
+			if (event.key === 'Escape') {
+				closeLightbox();
+			} else if (event.key === 'ArrowLeft' && photos.length > 1) {
+				renderPhoto(currentIndex - 1);
+			} else if (event.key === 'ArrowRight' && photos.length > 1) {
+				renderPhoto(currentIndex + 1);
+			}
+		});
+	}
+</script>
